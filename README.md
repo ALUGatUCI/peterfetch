@@ -11,7 +11,7 @@ Ensure your system has the following dependencies:
 - libcurl
 - curlpp
 - A C++ compiler with support for C++20 (see [this table](https://en.cppreference.com/cpp/compiler_support/20))
-- pkg-config (MacOS)
+- pkg-config
 
 > Note: For Debian based distributions, you may need to install the `-dev` version of some packages
 
