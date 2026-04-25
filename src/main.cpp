@@ -1,9 +1,6 @@
 #include <iostream>
-#include <sstream>
 
-#include <curlpp/cURLpp.hpp>
-#include <curlpp/Easy.hpp>
-#include <curlpp/Options.hpp>
+#include <cpr/cpr.h>
 #include <args.hxx>
 
 #include <config.hpp>
@@ -27,22 +24,9 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    try {
-        curlpp::Easy request;
-        request.setOpt<curlpp::options::Url>(ANTEATERAPI_URL);
-
-        std::stringstream response;
-        curlpp::options::WriteStream ws(&response);
-        request.setOpt(ws);
-        request.perform();
-
-        std::cout << "Got\n\n";
-        std::cout << response.str();
-    } catch(curlpp::RuntimeError & e) {
-        std::cout << e.what() << std::endl;
-    } catch(curlpp::LogicError & e) {
-        std::cout << e.what() << std::endl;
-    }
+    cpr::Response r = cpr::Get(cpr::Url{ANTEATERAPI_URL});
+    std::cout << "Response code: " << r.status_code << "\n";
+    std::cout << r.text << "\n";
 
     return 0;
 }

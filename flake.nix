@@ -11,10 +11,10 @@
 
     commonPkgs = pkgs: with pkgs; [
       cmake
+      ninja
       curl
-      curlpp
       pkg-config
-      libargs
+      git
     ];
   in {
     packages = forEachSystem (pkgs: rec {
