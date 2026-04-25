@@ -1,0 +1,8 @@
+#ifndef CONFIG_HPP_
+#define CONFIG_HPP_
+
+#define PROJECT_VERSION "@peterfetch_VERSION@"
+#define PROJECT_DESCRIPTION "@PROJECT_DESCRIPTION@"
+#define ANTEATERAPI_URL "@ANTEATERAPI_URL@"
+
+#endif

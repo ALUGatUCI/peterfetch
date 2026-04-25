@@ -7,11 +7,12 @@ A terminal fetch application akin to neofetch but for UCI students.
 ### System Dependencies
 
 Ensure your system has the following dependencies:
+- A C++ compiler with support for C++20 (see [this table](https://en.cppreference.com/cpp/compiler_support/20))
 - CMake
+- pkg-config
 - libcurl
 - curlpp
-- A C++ compiler with support for C++20 (see [this table](https://en.cppreference.com/cpp/compiler_support/20))
-- pkg-config
+- [args](https://github.com/Taywee/args)
 
 > Note: For Debian based distributions, you may need to install the `-dev` version of some packages
 

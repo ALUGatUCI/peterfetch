@@ -14,6 +14,7 @@
       curl
       curlpp
       pkg-config
+      libargs
     ];
   in {
     packages = forEachSystem (pkgs: rec {
