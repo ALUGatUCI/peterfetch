@@ -1,9 +1,12 @@
 #include <iostream>
 
 #include <cpr/cpr.h>
+#include <nlohmann/json.hpp>
 #include <args.hxx>
 
 #include <config.hpp>
+
+using json = nlohmann::json;
 
 int main(int argc, char *argv[]) {
     args::ArgumentParser parser("peterfetch v" PROJECT_VERSION "\n" PROJECT_DESCRIPTION);
@@ -26,7 +29,12 @@ int main(int argc, char *argv[]) {
 
     cpr::Response r = cpr::Get(cpr::Url{ANTEATERAPI_URL});
     std::cout << "Response code: " << r.status_code << "\n";
-    std::cout << r.text << "\n";
+    json rjson = json::parse(r.text);
+
+    if (r.status_code != 200)
+        std::cerr << rjson["message"] << "\n";
+    else
+        std::cout << rjson << "\n";
 
     return 0;
 }

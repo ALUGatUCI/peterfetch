@@ -31,6 +31,7 @@ target_sources(peterfetch PRIVATE src/main.cpp)
 
 include(cmake/cpr.cmake)
 include(cmake/args.cmake)
+include(cmake/json.cmake)
 
 # Config
 set(ANTEATERAPI_URL "https://anteaterapi.com")
