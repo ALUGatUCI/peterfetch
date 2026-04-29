@@ -1,6 +1,10 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+
+    # Since Git submodules are used to vendor dependencies, they must be explicitly allowed.
+    # This does require a Nix version >= 2.27.0
+    self.submodules = true;
   };
 
   outputs = { self, nixpkgs }: let
@@ -15,6 +19,7 @@
       curl
       pkg-config
       git
+      clang
     ];
   in {
     packages = forEachSystem (pkgs: rec {
@@ -24,9 +29,10 @@
 
     devShells = forEachSystem (pkgs: {
       default = pkgs.mkShell {
-        packages = (commonPkgs pkgs) ++ [
-          pkgs.clang-tools
-        ];
+        packages = (commonPkgs pkgs) ++ (with pkgs; [
+          clang-tools
+          lldb
+        ]);
       };
     });
   };

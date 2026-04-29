@@ -6,6 +6,7 @@ FetchContent_Declare(
     GIT_REPOSITORY "https://github.com/libcpr/cpr.git"
     GIT_TAG "1.14.2"
     GIT_PROGRESS TRUE
+    EXCLUDE_FROM_ALL
 )
 FetchContent_MakeAvailable(cpr)
 
