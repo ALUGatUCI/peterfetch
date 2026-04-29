@@ -33,6 +33,8 @@
           clang-tools
           lldb
         ]);
+        CMAKE_GENERATOR = "Ninja";
+        CLICOLOR_FORCE = 1;
       };
     });
   };

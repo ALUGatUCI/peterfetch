@@ -2,10 +2,7 @@ include(FetchContent)
 
 FetchContent_Declare(
     nlohmann_json
-    GIT_REPOSITORY "https://github.com/nlohmann/json.git"
-    GIT_TAG "v3.12.0"
-    GIT_PROGRESS TRUE
-    GIT_SHALLOW TRUE
+    SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/3rd-party/nlohmann-json
 )
 FetchContent_MakeAvailable(nlohmann_json)
 

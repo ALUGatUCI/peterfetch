@@ -3,9 +3,7 @@ include(FetchContent)
 set(CPR_USE_SYSTEM_CURL TRUE)
 FetchContent_Declare(
     cpr
-    GIT_REPOSITORY "https://github.com/libcpr/cpr.git"
-    GIT_TAG "1.14.2"
-    GIT_PROGRESS TRUE
+    SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/3rd-party/cpr
     EXCLUDE_FROM_ALL
 )
 FetchContent_MakeAvailable(cpr)

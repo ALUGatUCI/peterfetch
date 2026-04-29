@@ -4,9 +4,7 @@ set(ARGS_BUILD_EXAMPLE CACHE BOOL OFF)
 set(ARGS_BUILD_UNITTESTS CACHE BOOL OFF)
 FetchContent_Declare(
     args
-    GIT_REPOSITORY "https://github.com/Taywee/args.git"
-    GIT_TAG "6.4.12"
-    GIT_PROGRESS TRUE
+    SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/3rd-party/args
 )
 FetchContent_MakeAvailable(args)
 
