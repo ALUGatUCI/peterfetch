@@ -17,7 +17,6 @@
       cmake
       ninja
       curl
-      pkg-config
       git
       clang
     ];

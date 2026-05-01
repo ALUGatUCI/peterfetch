@@ -9,12 +9,28 @@ As a generic suggestion, consider either `feature/thing-im-working-on` or `dev/m
 
 ## Testing
 
-Please attempt to test your code before opening a pull request. At the very least, your code should compile before you make a commit.
+Tests can be run with `ctest --test-dir build` (assuming that `build` is your build directory).
 
-> Note: Unit testing will be added very shortly. After its addition, you should also ensure that tests pass and write new tests for your changes.
+Please test your code before opening a pull request. Tests should pass and writing new tests for your changes is expected.
 
 ## Coding Conventions
 
 Please follow the conventions that you see within any of the source files you are working on.
 
 > Note: Automated style checks will be introduced soon. After their introduction, please consult them.
+
+## Naming Your Commits
+
+We roughly follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) standard for commit messages.
+
+The following primary commit message types are used:
+- `feat` for new additions to the project
+- `fix` for bug fixes
+- `maintain` for project maintenance related work
+
+You should probably use one of these.
+
+For example, consider the message for [this](https://github.com/ALUGatUCI/peterfetch/commit/083473add66623c40914456319cefc1f3af0a2b9) commit:
+```
+feat: collect info from UCI Directory
+```

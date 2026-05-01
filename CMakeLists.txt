@@ -16,21 +16,6 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(FETCHCONTENT_QUIET OFF)
 
-find_package(PkgConfig OPTIONAL)
-find_package(CURL REQUIRED)
-
-if(NOT PkgConfig_FOUND)
-    message(STATUS "")
-    message(STATUS "pkg-config not found. Building all dependencies from source.")
-    message(STATUS "")
-
-    set(SRC_BUILD_CURLPP TRUE)
-    set(SRC_BUILD_ARGS TRUE)
-else()
-    set(SRC_BUILD_CURLPP FALSE)
-    set(SRC_BUILD_ARGS FALSE)
-endif()
-
 find_package(Git QUIET)
 if(GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git")
     execute_process(
@@ -63,5 +48,12 @@ include(cmake/xml.cmake)
 
 configure_file(include/config.hpp.in ${CMAKE_BINARY_DIR}/generated/config.hpp)
 include_directories(${CMAKE_BINARY_DIR}/generated/)
+
+# Testing
+include(CTest)
+if(BUILD_TESTING)
+    include(GoogleTest)
+    add_subdirectory(tests)
+endif()
 
 install(TARGETS peterfetch)

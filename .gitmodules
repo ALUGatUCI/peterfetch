@@ -10,3 +10,6 @@
 [submodule "3rd-party/nlohmann-json"]
 	path = 3rd-party/nlohmann-json
 	url = https://github.com/nlohmann/json.git
+[submodule "3rd-party/googletest"]
+	path = 3rd-party/googletest
+	url = https://github.com/google/googletest
