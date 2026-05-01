@@ -2,6 +2,10 @@
 
 A terminal fetch application akin to neofetch but for UCI students.
 
+## Contributing
+
+Before contributing to the project, please take a look at [CONTRIBUTING.md](CONTRIBUTING.md).
+
 ## Obtaining the Source
 
 This project uses Git Submodules. When cloning, make sure to either clone with `--recursive` or run `git submodule update --init --recursive` after cloning.
