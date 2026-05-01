@@ -16,7 +16,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(FETCHCONTENT_QUIET OFF)
 
-find_package(PkgConfig OPTIONAL)
+find_package(PkgConfig)
 find_package(CURL REQUIRED)
 
 if(NOT PkgConfig_FOUND)
