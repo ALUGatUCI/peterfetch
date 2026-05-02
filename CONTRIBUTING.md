@@ -2,6 +2,19 @@
 
 Thank you for wanting to contribute to this project. Before any of your time, please make sure to follow the guidelines below.
 
+## Utility Scripts
+
+The `meta` directory contains several scripts to simply frequently run commands such as building, running, and testing.
+
+They should be run from the project's root directory in the for `./meta/test.sh`.
+
+> Note: you still need to generate the `build` directory manually with `cmake -B build`.
+
+Important scripts:
+- `meta/build.sh` (only build)
+- `meta/run.sh <any args for peterfetch>` (build and run)
+- `meta/test.sh` (build and test)
+
 ## Branches
 
 Please do all of your work on a separate branch and not `main`.

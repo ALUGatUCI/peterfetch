@@ -45,6 +45,9 @@ And then compile with:
 
 ```bash
 cmake --build build
+
+# Or
+./meta/build.sh
 ```
 
 This will produce a binary called `peterfetch` in the `build` directory.
