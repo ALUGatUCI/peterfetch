@@ -24,4 +24,8 @@ macro(register_test TESTNAME)
     set_target_properties(${TESTNAME} PROPERTIES FOLDER tests)
 endmacro()
 
-register_test(directory_info directory_info.cpp)
+register_test(directory_info
+    directory_info_test.cpp
+    ../src/http_client.cpp
+    ../src/directory_info.cpp
+)

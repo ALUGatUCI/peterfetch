@@ -1,5 +1,5 @@
-#ifndef CLI_ARGS_HPP_
-#define CLI_ARGS_HPP_
+#ifndef CLI_ARGS_HPP
+#define CLI_ARGS_HPP
 
 #include <args.hxx>
 

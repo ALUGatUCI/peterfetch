@@ -1,5 +1,4 @@
 #include "directory_info.hpp"
-#include "libxml/parser.h"
 
 #include <cstdio>
 #include <cstring>
@@ -9,25 +8,27 @@
 #include <cpr/cpr.h>
 #include <libxml/HTMLparser.h>
 #include <libxml/HTMLtree.h>
+#include <libxml/parser.h>
 #include <libxml/xpath.h>
 
-DirectoryInfo::DirectoryInfo(const std::string &netid)
+#include "http_client.hpp"
+
+DirectoryInfo::DirectoryInfo(const std::string &netid, const std::string &url,
+                             HttpClient *client)
     : m_netid(netid)
-    , m_url(DIRECTORY_BASE_URL)
-    , m_populated(false)
+    , m_url(url + netid + ".txt")
+    , m_client(client)
+    , populated(false)
 {
-    m_url += netid + ".txt";
 }
 
 DirectoryFetchResult DirectoryInfo::fetch() {
-    cpr::Response response = cpr::Get(
-        cpr::Url { m_url },
-        cpr::Header { { "User-Agent", "peterfetch" } },
-        cpr::Redirect { false }
-    );
+    cpr::Response response = m_client->get(cpr::Url { m_url }, false);
 
-    if (response.status_code != 200)
+    if (response.status_code / 100 == 3)
         return DirectoryFetchResult::DOESNT_EXIST;
+    else if (response.status_code != 200)
+        return DirectoryFetchResult::INVALID_RESPONSE;
 
     if (parseRaw(response.text) < 0)
         return DirectoryFetchResult::PARSING_FAILED;
@@ -36,12 +37,15 @@ DirectoryFetchResult DirectoryInfo::fetch() {
 }
 
 void DirectoryInfo::print(std::ostream &out) const {
-    out << "DirectoryInfo {"
-        << " netid=" << m_netid
-        << ", name=" << m_name
-        << ", level=" << m_level
-        << ", major=" << m_major
-        << " }";
+    if (populated)
+        out << "DirectoryInfo {"
+            << " netid=" << m_netid
+            << ", name=" << m_name
+            << ", level=" << m_level
+            << ", major=" << m_major
+            << " }";
+    else
+        out << "DirectoryInfo { unpopulated }";
 }
 
 int DirectoryInfo::parseRaw(const std::string &raw) {
@@ -85,7 +89,7 @@ int DirectoryInfo::parseRaw(const std::string &raw) {
     // not the body itself
     parseXPath(nodeset->nodeTab[0]->children);
 
-    m_populated = true;
+    populated = true;
 
     return 0;
 }

@@ -34,6 +34,7 @@
         ]);
         CMAKE_GENERATOR = "Ninja";
         CLICOLOR_FORCE = 1;
+        CTEST_OUTPUT_ON_FAILURE = 1;
       };
     });
   };

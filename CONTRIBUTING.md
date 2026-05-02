@@ -9,7 +9,7 @@ As a generic suggestion, consider either `feature/thing-im-working-on` or `dev/m
 
 ## Testing
 
-Tests can be run with `ctest --test-dir build` (assuming that `build` is your build directory).
+Tests can be run with `ctest --test-dir build --output-on-failure` (assuming that `build` is your build directory).
 
 Please test your code before opening a pull request. Tests should pass and writing new tests for your changes is expected.
 

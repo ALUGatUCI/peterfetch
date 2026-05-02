@@ -14,6 +14,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
 set(FETCHCONTENT_QUIET OFF)
 
 find_package(Git QUIET)
@@ -34,6 +35,7 @@ target_sources(
     peterfetch PRIVATE
     src/main.cpp
     src/directory_info.cpp
+    src/http_client.cpp
 )
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-fcolor-diagnostics)

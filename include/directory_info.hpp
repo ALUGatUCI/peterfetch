@@ -1,16 +1,17 @@
-#ifndef DIRECTORY_INFO_HPP_
-#define DIRECTORY_INFO_HPP_
+#ifndef DIRECTORY_INFO_HPP
+#define DIRECTORY_INFO_HPP
 
 #include <string>
 
 #include <libxml/tree.h>
 
-using namespace std::string_view_literals;
+#include "http_client.hpp"
 
-constexpr auto DIRECTORY_BASE_URL = "https://directory.uci.edu/people/"sv;
+constexpr const char *DIRECTORY_BASE_URL = "https://directory.uci.edu/people/";
 
 enum class DirectoryFetchResult {
     OK,
+    INVALID_RESPONSE,
     DOESNT_EXIST,
     PARSING_FAILED,
 };
@@ -24,7 +25,9 @@ enum class StudentLevel {
 
 class DirectoryInfo {
 public:
-    DirectoryInfo(const std::string &netid);
+    DirectoryInfo(const std::string &netid,
+                  const std::string &url = DIRECTORY_BASE_URL,
+                  HttpClient *client = new HttpClient);
 
     /**
      * Fetch the required data and populate this object with it.
@@ -33,13 +36,15 @@ public:
 
     void print(std::ostream &out) const;
 
+    bool populated;
+
 private:
-    bool m_populated;
     std::string m_url;
     std::string m_netid;
     std::string m_name;
     std::string m_major;
     StudentLevel m_level;
+    HttpClient *m_client;
 
     /**
      * Parse the provided raw text and populate this object.
