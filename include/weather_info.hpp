@@ -41,4 +41,4 @@ private:
     HttpClient *m_client;
 };
 
-#endif // DIRECTORY_INFO_HPP
+#endif // WEATHER_INFO_HPP
