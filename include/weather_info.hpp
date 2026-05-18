@@ -38,7 +38,7 @@ private:
     std::string m_humidity;
     HttpClient *m_client;
 
-    std::string getHourlyForecastLink();
+    std::string getHourlyForecastLink(const std::string& response);
 
     void populateFromHourlyForecast(const std::string& hourlyForecastResponse);
 };
