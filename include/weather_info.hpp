@@ -12,6 +12,7 @@ constexpr const char *WEATHER_BASE_URL = "https://api.weather.gov/";
 enum class WeatherFetchResult {
     OK,
     INVALID_RESPONSE,
+    DOESNT_EXIST,
     PARSING_FAILED,
 };
 
@@ -31,14 +32,15 @@ public:
 
 private:
     std::string m_url;
-    double m_latitude;
-    double m_longitude;
     std::string m_temperature;
     std::string m_precipitation;
-    std::string m_weather;
     std::string m_wind;
     std::string m_humidity;
     HttpClient *m_client;
+
+    std::string getHourlyForecastLink();
+
+    void populateFromHourlyForecast(const std::string& hourlyForecastResponse);
 };
 
 #endif // WEATHER_INFO_HPP
