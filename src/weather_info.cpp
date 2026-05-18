@@ -67,7 +67,7 @@ void WeatherInfo::populateFromHourlyForecast(const std::string& hourlyForecastRe
         nlohmann::json firstItem = hourlyForecastJson["properties"]["periods"][0];
         m_temperature = std::to_string(firstItem["temperature"].get<int>())
                       + " " + firstItem["temperatureUnit"].get<std::string>();
-        m_precipitation = std::to_string(firstItem["probabilityOfPrecipitation"].get<int>()) + "%";
+        m_precipitation = std::to_string(firstItem["probabilityOfPrecipitation"]["value"].get<int>()) + "%";
         m_wind = firstItem["windSpeed"].get<std::string>()
                + " " + firstItem["windDirection"].get<std::string>();
         m_humidity = std::to_string(firstItem["relativeHumidity"]["value"].get<int>()) + "%";
