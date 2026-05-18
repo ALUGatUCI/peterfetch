@@ -2,6 +2,8 @@
 #include "http_client.hpp"
 
 #include <string>
+#include <iostream>
+
 #include <nlohmann/json.hpp>
 
 WeatherInfo::WeatherInfo(const std::string& url,
@@ -14,7 +16,7 @@ WeatherInfo::WeatherInfo(const std::string& url,
 }
 
 WeatherFetchResult WeatherInfo::fetch() {
-    std::string response = m_client->get(m_url);
+    cpr::Response response = m_client->get(m_url);
     if (response.status_code / 100 == 3)
         return WeatherFetchResult::DOESNT_EXIST;
     else if (response.status_code != 200)
@@ -22,17 +24,17 @@ WeatherFetchResult WeatherInfo::fetch() {
 
     std::string hourlyForecastLink;
     try {
-        hourlyForecastLink = getHourlyForecastLink(response);
+        hourlyForecastLink = getHourlyForecastLink(response.text);
     } catch (const nlohmann::json::exception& e) {
         return WeatherFetchResult::INVALID_RESPONSE;
     }
 
-    std::string hourlyForecastResponse = m_client->get(hourlyForecastLink);
+    cpr::Response hourlyForecastResponse = m_client->get(hourlyForecastLink);
     if (hourlyForecastResponse.status_code != 200)
         return WeatherFetchResult::INVALID_RESPONSE;
 
     try {
-        populateFromHourlyForecast(hourlyForecastResponse);
+        populateFromHourlyForecast(hourlyForecastResponse.text);
     } catch (const nlohmann::json::exception& e) {
         return WeatherFetchResult::INVALID_RESPONSE;
     }
@@ -50,7 +52,8 @@ void WeatherInfo::print(std::ostream &out) const {
 
 std::string WeatherInfo::getHourlyForecastLink(const std::string& response) {
     nlohmann::json jsonResponse = nlohmann::json::parse(response);
-    return jsonResponse["properties"]["forecastHourly"]["href"];
+    std::cout << jsonResponse["properties"]["forecastHourly"] << std::endl;
+    return jsonResponse["properties"]["forecastHourly"];
 }
 
 void WeatherInfo::populateFromHourlyForecast(const std::string& hourlyForecastResponse) {
@@ -62,11 +65,14 @@ void WeatherInfo::populateFromHourlyForecast(const std::string& hourlyForecastRe
     }
 
     try {
-        nlohmann::json firstItem = hourlyForecastJson["properties"]["periods"]["data"][0];
-        m_temperature = firstItem["temperature"] + " " + firstItem["temperatureUnit"];
-        m_precipitation = firstItem["probabilityOfPrecipitation"] + "%";
-        m_wind = firstItem["windSpeed"] + " " + firstItem["windDirection"];
-        m_humidity = firstItem["relativeHumidity"]["value"] + "%";
+        nlohmann::json firstItem = hourlyForecastJson["properties"]["periods"][0];
+        m_temperature = std::to_string(firstItem["temperature"].get<int>())
+                      + " " + firstItem["temperatureUnit"].get<std::string>();
+        m_precipitation = std::to_string(firstItem["probabilityOfPrecipitation"].get<int>()) + "%";
+        m_wind = firstItem["windSpeed"].get<std::string>()
+               + " " + firstItem["windDirection"].get<std::string>();
+        m_humidity = std::to_string(firstItem["relativeHumidity"]["value"].get<int>()) + "%";
+
     } catch (const nlohmann::json::exception& e) {
         throw std::runtime_error("Failed to parse hourly forecast: " + std::string(e.what()));
     }
