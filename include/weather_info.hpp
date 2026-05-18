@@ -28,6 +28,11 @@ public:
 
     void print(std::ostream &out) const;
 
+    const std::string &temperature();
+    const std::string &precipitation();
+    const std::string &wind();
+    const std::string &humidity();
+
     bool populated;
 
 private:

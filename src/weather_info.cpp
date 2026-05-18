@@ -50,6 +50,22 @@ void WeatherInfo::print(std::ostream &out) const {
     out << "Humidity: " << m_humidity << std::endl;
 }
 
+const std::string &WeatherInfo::temperature() {
+    return m_temperature;
+}
+
+const std::string &WeatherInfo::precipitation() {
+    return m_precipitation;
+}
+
+const std::string &WeatherInfo::wind() {
+    return m_wind;
+}
+
+const std::string &WeatherInfo::humidity() {
+    return m_humidity;
+}
+
 std::string WeatherInfo::getHourlyForecastLink(const std::string& response) {
     nlohmann::json jsonResponse = nlohmann::json::parse(response);
     return jsonResponse["properties"]["forecastHourly"];
