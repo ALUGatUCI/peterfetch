@@ -28,10 +28,10 @@ public:
 
     void print(std::ostream &out) const;
 
-    const std::string &temperature() { return m_temperature; }
-    const std::string &precipitation() { return m_precipitation; }
-    const std::string &wind() { return m_wind; }
-    const std::string &humidity() { return m_humidity; }
+    const std::string &temperature() const { return m_temperature; }
+    const std::string &precipitation() const { return m_precipitation; }
+    const std::string &wind() const { return m_wind; }
+    const std::string &humidity() const { return m_humidity; }
 
     bool populated;
 
