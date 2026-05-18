@@ -26,7 +26,7 @@ WeatherFetchResult WeatherInfo::fetch() {
     try {
         hourlyForecastLink = getHourlyForecastLink(response.text);
     } catch (const nlohmann::json::exception& e) {
-        return WeatherFetchResult::INVALID_RESPONSE;
+        return WeatherFetchResult::PARSING_FAILED;
     }
 
     cpr::Response hourlyForecastResponse = m_client->get(hourlyForecastLink);
@@ -36,7 +36,7 @@ WeatherFetchResult WeatherInfo::fetch() {
     try {
         populateFromHourlyForecast(hourlyForecastResponse.text);
     } catch (const nlohmann::json::exception& e) {
-        return WeatherFetchResult::INVALID_RESPONSE;
+        return WeatherFetchResult::PARSING_FAILED;
     }
 
     return WeatherFetchResult::OK;
