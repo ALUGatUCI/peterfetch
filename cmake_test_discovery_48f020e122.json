@@ -1,0 +1,37 @@
+{
+  "tests": 5,
+  "name": "AllTests",
+  "testsuites": [
+    {
+      "name": "DirectoryInfo",
+      "tests": 5,
+      "testsuite": [
+        {
+          "name": "BeginsUnpopulated",
+          "file": "\/Users\/user\/CLionProjects\/peterfetch\/tests\/directory_info_test.cpp",
+          "line": 41
+        },
+        {
+          "name": "RedirectsBecomeMissingPeople",
+          "file": "\/Users\/user\/CLionProjects\/peterfetch\/tests\/directory_info_test.cpp",
+          "line": 46
+        },
+        {
+          "name": "FetchingPopulates",
+          "file": "\/Users\/user\/CLionProjects\/peterfetch\/tests\/directory_info_test.cpp",
+          "line": 61
+        },
+        {
+          "name": "PrintingUnpopulated",
+          "file": "\/Users\/user\/CLionProjects\/peterfetch\/tests\/directory_info_test.cpp",
+          "line": 78
+        },
+        {
+          "name": "PrintingPopulated",
+          "file": "\/Users\/user\/CLionProjects\/peterfetch\/tests\/directory_info_test.cpp",
+          "line": 87
+        }
+      ]
+    }
+  ]
+}

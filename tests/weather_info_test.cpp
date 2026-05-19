@@ -15,10 +15,7 @@ TEST(WeatherInfo, BeginsUnpopulated) {
 }
 
 TEST(WeatherInfo, Fetch) {
-    WeatherInfo info{WEATHER_BASE_URL,
-                    33.6405,
-                    -117.8389,
-                    new HttpClient()};
+    WeatherInfo info;
 
     info.fetch();
     info.print(std::cout);
