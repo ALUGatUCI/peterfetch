@@ -1,5 +1,5 @@
-#ifndef DIRECTORY_INFO_HPP
-#define DIRECTORY_INFO_HPP
+#ifndef WEATHER_INFO_HPP
+#define WEATHER_INFO_HPP
 
 #include <string>
 
@@ -8,6 +8,8 @@
 #include "http_client.hpp"
 
 constexpr const char *WEATHER_BASE_URL = "https://api.weather.gov/";
+constexpr const double DEFAULT_LATITUDE = 33.6405;
+constexpr const double DEFAULT_LONGITUDE = -117.8389;
 
 enum class WeatherFetchResult {
     OK,
@@ -19,8 +21,8 @@ enum class WeatherFetchResult {
 class WeatherInfo {
 public:
     WeatherInfo(const std::string& url = WEATHER_BASE_URL,
-                const double latitude = 33.6405,
-                const double longitude = -117.8389,
+                const double latitude = DEFAULT_LATITUDE,
+                const double longitude = DEFAULT_LONGITUDE,
                 HttpClient *client = new HttpClient());
 
     /* Fetch weather data and populate the weather info */
@@ -37,10 +39,11 @@ public:
 
 private:
     std::string m_url;
-    std::string m_temperature;
-    std::string m_precipitation;
+    int m_temperature;
+    bool m_isFahrenheit;
+    int m_precipitation;
     std::string m_wind;
-    std::string m_humidity;
+    int m_humidity;
     HttpClient *m_client;
 
     std::string getHourlyForecastLink(const std::string& response);
