@@ -65,12 +65,12 @@ void WeatherInfo::populateFromHourlyForecast(const std::string& hourlyForecastRe
 
     try {
         nlohmann::json firstItem = hourlyForecastJson["properties"]["periods"][0];
-        m_temperature = std::to_string(firstItem["temperature"].get<int>())
-                      + " " + firstItem["temperatureUnit"].get<std::string>();
-        m_precipitation = std::to_string(firstItem["probabilityOfPrecipitation"]["value"].get<int>()) + "%";
+        m_temperature = firstItem["temperature"].get<int>();
+        m_isFahrenheit = firstItem["temperatureUnit"].get<std::string>() == "F";
+        m_precipitation = firstItem["probabilityOfPrecipitation"]["value"].get<int>();
         m_wind = firstItem["windSpeed"].get<std::string>()
                + " " + firstItem["windDirection"].get<std::string>();
-        m_humidity = std::to_string(firstItem["relativeHumidity"]["value"].get<int>()) + "%";
+        m_humidity = firstItem["relativeHumidity"]["value"].get<int>();
 
     } catch (const nlohmann::json::exception& e) {
         throw std::runtime_error("Failed to parse hourly forecast: " + std::string(e.what()));
