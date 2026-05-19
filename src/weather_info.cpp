@@ -44,10 +44,10 @@ WeatherFetchResult WeatherInfo::fetch() {
 
 void WeatherInfo::print(std::ostream &out) const {
     if (!populated) return;
-    out << "Temperature: " << m_temperature << std::endl;
-    out << "Precipitation: " << m_precipitation << std::endl;
+    out << "Temperature: " << m_temperature << " " << (m_isFahrenheit ? "F" : "C") << std::endl;
+    out << "Precipitation: " << m_precipitation << "%" << std::endl;
     out << "Wind: " << m_wind << std::endl;
-    out << "Humidity: " << m_humidity << std::endl;
+    out << "Humidity: " << m_humidity << "%" << std::endl;
 }
 
 std::string WeatherInfo::getHourlyForecastLink(const std::string& response) {
