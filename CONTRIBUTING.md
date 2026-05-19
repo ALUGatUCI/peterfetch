@@ -26,6 +26,8 @@ Tests can be run with `ctest --test-dir build --output-on-failure` (assuming tha
 
 Please test your code before opening a pull request. Tests should pass and writing new tests for your changes is expected.
 
+**IMPORTANT:** New tests need to be added into `tests/CMakeLists.txt`.
+
 ## Coding Conventions
 
 Please follow the conventions that you see within any of the source files you are working on.

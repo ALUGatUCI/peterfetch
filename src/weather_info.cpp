@@ -1,10 +1,11 @@
 #include "weather_info.hpp"
-#include "http_client.hpp"
 
 #include <string>
 #include <iostream>
 
 #include <nlohmann/json.hpp>
+
+#include "http_client.hpp"
 
 WeatherInfo::WeatherInfo(const std::string& url,
                          const double latitude,

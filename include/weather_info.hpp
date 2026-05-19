@@ -1,5 +1,5 @@
-#ifndef DIRECTORY_INFO_HPP
-#define DIRECTORY_INFO_HPP
+#ifndef WEATHER_INFO_HPP
+#define WEATHER_INFO_HPP
 
 #include <string>
 

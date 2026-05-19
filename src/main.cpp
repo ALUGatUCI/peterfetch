@@ -10,6 +10,7 @@
 #include "cli_args.hpp"
 #include "config.hpp"
 #include "directory_info.hpp"
+#include "weather_info.hpp"
 
 using json = nlohmann::json;
 
@@ -39,7 +40,17 @@ int main(int argc, char *argv[]) {
             return 1;
     }
 
+    WeatherInfo weather_info;
+    switch (weather_info.fetch()) {
+        case WeatherFetchResult::OK:
+            break;
+        default:
+            std::cerr << "Failed to fetch weather info!\n";
+            return 1;
+    }
+
     std::cout << base_info << "\n";
+    weather_info.print(std::cout);
 
     return 0;
 }

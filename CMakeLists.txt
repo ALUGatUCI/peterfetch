@@ -5,6 +5,21 @@ project("peterfetch"
         LANGUAGES CXX
 )
 
+
+### SOURCE FILES - ADD ENTRIES HERE FOR NEW FILES ###
+
+set(SOURCE_FILES
+    src/main.cpp
+    src/http_client.cpp
+    src/directory_info.cpp
+    src/weather_info.cpp
+)
+
+### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
+
+
+message(STATUS "Source files: ${SOURCE_FILES}")
+
 # Default to full debug mode
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
     set(CMAKE_BUILD_TYPE CACHE STRING Debug FORCE)
@@ -31,12 +46,7 @@ endif()
 
 add_executable(peterfetch)
 target_include_directories(peterfetch PRIVATE include)
-target_sources(
-    peterfetch PRIVATE
-    src/main.cpp
-    src/directory_info.cpp
-    src/http_client.cpp
-)
+target_sources(peterfetch PRIVATE ${SOURCE_FILES})
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-fcolor-diagnostics)
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
