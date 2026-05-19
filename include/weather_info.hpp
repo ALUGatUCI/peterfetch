@@ -30,10 +30,11 @@ public:
 
     void print(std::ostream &out) const;
 
-    const std::string &temperature() const { return m_temperature; }
-    const std::string &precipitation() const { return m_precipitation; }
+    const int &temperature() const { return m_temperature; }
+    const bool &isFahrenheit() const { return m_isFahrenheit; }
+    const int &precipitation() const { return m_precipitation; }
     const std::string &wind() const { return m_wind; }
-    const std::string &humidity() const { return m_humidity; }
+    const int &humidity() const { return m_humidity; }
 
     bool populated;
 
