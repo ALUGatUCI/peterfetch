@@ -36,6 +36,7 @@ target_sources(
     src/main.cpp
     src/directory_info.cpp
     src/http_client.cpp
+    src/weather_info.cpp
 )
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-fcolor-diagnostics)
