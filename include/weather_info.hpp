@@ -8,8 +8,8 @@
 #include "http_client.hpp"
 
 constexpr const char *WEATHER_BASE_URL = "https://api.weather.gov/";
-constexpr const double DEFAULT_LATITUDE = 33.6405;
-constexpr const double DEFAULT_LONGITUDE = -117.8389;
+constexpr const double DEFAULT_LATITUDE = 33.6405; // Latitude of UC Irvine
+constexpr const double DEFAULT_LONGITUDE = -117.8389; // Longitude of UC Irvine
 
 enum class WeatherFetchResult {
     OK,
