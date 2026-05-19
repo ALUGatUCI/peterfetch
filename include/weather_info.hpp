@@ -35,8 +35,7 @@ public:
     const int &precipitation() const { return m_precipitation; }
     const std::string &wind() const { return m_wind; }
     const int &humidity() const { return m_humidity; }
-
-    bool populated;
+    const bool &populated() const { return m_populated; }
 
 private:
     std::string m_url;
@@ -46,6 +45,8 @@ private:
     std::string m_wind;
     int m_humidity;
     HttpClient *m_client;
+
+    bool m_populated;
 
     std::string getHourlyForecastLink(const std::string& response);
 

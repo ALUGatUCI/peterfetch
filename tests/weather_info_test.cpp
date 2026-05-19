@@ -11,7 +11,7 @@
 
 TEST(WeatherInfo, BeginsUnpopulated) {
     WeatherInfo info;
-    EXPECT_FALSE(info.populated);
+    EXPECT_FALSE(info.populated());
 }
 
 TEST(WeatherInfo, Fetch) {
@@ -19,5 +19,5 @@ TEST(WeatherInfo, Fetch) {
 
     info.fetch();
     info.print(std::cout);
-    EXPECT_TRUE(info.populated);
+    EXPECT_TRUE(info.populated());
 }

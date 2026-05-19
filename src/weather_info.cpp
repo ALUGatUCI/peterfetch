@@ -13,7 +13,7 @@ WeatherInfo::WeatherInfo(const std::string& url,
                          HttpClient *client):
     m_url(url + "points/" + std::to_string(latitude) + "," + std::to_string(longitude)),
     m_client(client),
-    populated(false) {
+    m_populated(false) {
 }
 
 WeatherFetchResult WeatherInfo::fetch() {
@@ -44,7 +44,7 @@ WeatherFetchResult WeatherInfo::fetch() {
 }
 
 void WeatherInfo::print(std::ostream &out) const {
-    if (!populated) return;
+    if (!m_populated) return;
     out << "Temperature: " << m_temperature << " " << (m_isFahrenheit ? "F" : "C") << std::endl;
     out << "Precipitation: " << m_precipitation << "%" << std::endl;
     out << "Wind: " << m_wind << std::endl;
@@ -77,5 +77,5 @@ void WeatherInfo::populateFromHourlyForecast(const std::string& hourlyForecastRe
         throw std::runtime_error("Failed to parse hourly forecast: " + std::string(e.what()));
     }
 
-    populated = true;
+    m_populated = true;
 }
