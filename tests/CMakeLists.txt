@@ -29,3 +29,9 @@ register_test(directory_info
     ../src/http_client.cpp
     ../src/directory_info.cpp
 )
+
+register_test(weather_info
+    weather_info_test.cpp
+    ../src/http_client.cpp
+    ../src/weather_info.cpp
+)
