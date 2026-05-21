@@ -17,6 +17,12 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
 set(FETCHCONTENT_QUIET OFF)
 
+# On Windows, we need to prevent it from crashing due to cpr.dll
+# and libxml2.dll being missing, *sigh*
+if (WIN32)
+    set(BUILD_SHARED_LIBS OFF)
+endif()
+
 find_package(Git QUIET)
 if(GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git")
     execute_process(
