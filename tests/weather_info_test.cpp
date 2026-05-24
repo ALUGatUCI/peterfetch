@@ -38,6 +38,8 @@ constexpr const char *PROPER_RESPONSE = R"({
     }
 })";
 
+constexpr const char *FAILED_POINTS_RESPONSE = "";
+
 TEST(WeatherInfo, BeginsUnpopulated) {
     WeatherInfo info;
     EXPECT_FALSE(info.populated());
@@ -68,4 +70,38 @@ TEST(WeatherInfo, Fetch) {
     EXPECT_EQ(info.precipitation(), 10);
     EXPECT_EQ(info.wind(), "5 mph NW");
     EXPECT_EQ(info.humidity(), 55);
+}
+
+TEST(WeatherInfo, FetchFailedPoints) {
+    MockHttpClient mockClient;
+
+    cpr::Response pointsResponse;
+    pointsResponse.status_code = 404;
+    pointsResponse.text = FAILED_POINTS_RESPONSE;
+
+    EXPECT_CALL(mockClient, get(_, _))
+        .WillOnce(Return(pointsResponse));
+
+    WeatherInfo info{WEATHER_BASE_URL, DEFAULT_LATITUDE, DEFAULT_LONGITUDE,
+                     &mockClient};
+
+    EXPECT_EQ(info.fetch(), WeatherFetchResult::INVALID_RESPONSE);
+    EXPECT_FALSE(info.populated());
+}
+
+TEST(WeatherInfo, FailParse) {
+    MockHttpClient mockClient;
+
+    cpr::Response pointsResponse;
+    pointsResponse.status_code = 200;
+    pointsResponse.text = FAILED_POINTS_RESPONSE;
+
+    EXPECT_CALL(mockClient, get(_, _))
+        .WillOnce(Return(pointsResponse));
+
+    WeatherInfo info{WEATHER_BASE_URL, DEFAULT_LATITUDE, DEFAULT_LONGITUDE,
+                     &mockClient};
+
+    EXPECT_EQ(info.fetch(), WeatherFetchResult::PARSING_FAILED);
+    EXPECT_FALSE(info.populated());
 }
