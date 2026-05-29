@@ -9,7 +9,7 @@ jobs:
     steps:
     - uses: actions/checkout@v6
     - uses: DeterminateSystems/determinate-nix-action@v3.20.0
-    - uses: DeterminateSystems/magic-nix-cache-action@v13
+    - uses: DeterminateSystems/magic-nix-cache-action@v14
       with:
         use-flakehub: false
 
