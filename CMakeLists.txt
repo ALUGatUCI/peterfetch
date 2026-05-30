@@ -29,6 +29,23 @@ if(GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git")
     endif()
 endif()
 
+if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    add_compile_options(-fcolor-diagnostics)
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    add_compile_options(-fdiagnostics-color=always)
+endif()
+
+if(CMAKE_BUILD_TYPE MATCHES "Debug")
+    set(SANITIZER_FLAGS "-fsanitize=address,undefined,leak")
+    
+    if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+        add_compile_options(${SANITIZER_FLAGS} -fno-omit-frame-pointer)
+        add_link_options(${SANITIZER_FLAGS})
+    elseif(MSVC)
+        add_compile_options(/fsanitize=address)
+    endif()
+endif()
+
 add_executable(peterfetch)
 target_include_directories(peterfetch PRIVATE include)
 target_sources(
@@ -36,12 +53,12 @@ target_sources(
     src/main.cpp
     src/directory_info.cpp
     src/http_client.cpp
+    src/layout.cpp
+    src/section.cpp
+    src/artwork.cpp
+    src/section_list.cpp
+    src/iter_utils.cpp
 )
-if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-  add_compile_options(-fcolor-diagnostics)
-elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-  add_compile_options(-fdiagnostics-color=always)
-endif()
 
 include(cmake/cpr.cmake)
 include(cmake/args.cmake)

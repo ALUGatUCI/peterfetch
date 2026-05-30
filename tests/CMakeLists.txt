@@ -29,3 +29,6 @@ register_test(directory_info
     ../src/http_client.cpp
     ../src/directory_info.cpp
 )
+register_test(iter_utils
+    iter_utils_test.cpp
+)
