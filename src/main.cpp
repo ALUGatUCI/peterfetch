@@ -7,24 +7,32 @@
 #include <libxml/xmlversion.h>
 #include <nlohmann/json.hpp>
 
+#include "artwork.hpp"
 #include "cli_args.hpp"
 #include "config.hpp"
 #include "directory_info.hpp"
+#include "layout.hpp"
 
 using json = nlohmann::json;
 
-static std::optional<CliArgs> handle_args(int argc, char *argv[]);
+static std::optional<CliArgs> handleArgs(int argc, char *argv[]);
 
 int main(int argc, char *argv[]) {
-    std::optional<CliArgs> args = handle_args(argc, argv);
+    std::optional<CliArgs> args = handleArgs(argc, argv);
     if (!args.has_value()) {
         return 1;
     }
 
     // Mandatory library initialization
-    LIBXML_TEST_VERSION
+    LIBXML_TEST_VERSION;
 
-    std::cout << args->netid << "\n";
+    TextLayout layout({ artwork::UCI, artwork::UCI_OFFSET });
+
+    // std::cout << "\x1b[38;2;254;204;7m"
+    //     << artwork::UCI
+    //     << "\x1b[0m\n";
+
+    // std::cout << args->netid << "\n";
 
     DirectoryInfo base_info { args->netid };
     switch (base_info.fetch()) {
@@ -38,13 +46,17 @@ int main(int argc, char *argv[]) {
             std::cerr << "Failed to fetch UCI Directory info!\n";
             return 1;
     }
+    DirectoryInfoSection info_section(base_info);
+    layout.addSection(&info_section);
+    // layout.addSection(&info_section);
+    // layout.addSection(&info_section);
 
-    std::cout << base_info << "\n";
+    std::cout << layout;
 
     return 0;
 }
 
-static std::optional<CliArgs> handle_args(int argc, char *argv[]) {
+static std::optional<CliArgs> handleArgs(int argc, char *argv[]) {
     args::ArgumentParser parser("peterfetch v" PROJECT_VERSION "\n" PROJECT_DESCRIPTION);
     args::HelpFlag help(parser, "help", "Display this help menu", {'h', "help"});
     args::Group required_args(parser, "", args::Group::Validators::All);

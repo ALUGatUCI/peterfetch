@@ -18,8 +18,14 @@ DirectoryInfo::DirectoryInfo(const std::string &netid, const std::string &url,
     : m_netid(netid)
     , m_url(url + netid + ".txt")
     , m_client(client)
-    , populated(false)
+    , m_populated(false)
 {
+}
+
+void DirectoryInfo::ensure_populated() const {
+    if (!m_populated) {
+        throw std::runtime_error("Attempted access to unpopulated data");
+    }
 }
 
 DirectoryFetchResult DirectoryInfo::fetch() {
@@ -37,7 +43,7 @@ DirectoryFetchResult DirectoryInfo::fetch() {
 }
 
 void DirectoryInfo::print(std::ostream &out) const {
-    if (populated)
+    if (m_populated)
         out << "DirectoryInfo {"
             << " netid=" << m_netid
             << ", name=" << m_name
@@ -89,7 +95,7 @@ int DirectoryInfo::parseRaw(const std::string &raw) {
     // not the body itself
     parseXPath(nodeset->nodeTab[0]->children);
 
-    populated = true;
+    m_populated = true;
 
     return 0;
 }
@@ -129,6 +135,24 @@ StudentLevel DirectoryInfo::levelFromString(const std::string &level) const {
         return StudentLevel::SOPHOMORE;
     } else {
         return StudentLevel::FRESHMAN;
+    }
+}
+
+std::format_context::iterator std::formatter<StudentLevel, char>::format(
+    const StudentLevel &level,
+    std::format_context &ctx
+) const {
+    switch (level) {
+        case StudentLevel::FRESHMAN:
+            return std::format_to(ctx.out(), "Freshman");
+        case StudentLevel::SOPHOMORE:
+            return std::format_to(ctx.out(), "Sophomore");
+        case StudentLevel::JUNIOR:
+            return std::format_to(ctx.out(), "Junior");
+        case StudentLevel::SENIOR:
+            return std::format_to(ctx.out(), "Senior");
+        default:
+            throw std::runtime_error("Invalid StudentLevel");
     }
 }
 

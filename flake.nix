@@ -27,10 +27,14 @@
     });
 
     devShells = forEachSystem (pkgs: {
-      default = pkgs.mkShell {
+      default = pkgs.mkShell.override {
+        stdenv = pkgs.clangStdenv;
+      } {
         packages = (commonPkgs pkgs) ++ (with pkgs; [
           clang-tools
           lldb
+          gdb
+          doxygen
         ]);
         CMAKE_GENERATOR = "Ninja";
         CLICOLOR_FORCE = 1;

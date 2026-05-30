@@ -25,9 +25,11 @@ enum class StudentLevel {
 
 class DirectoryInfo {
 public:
-    DirectoryInfo(const std::string &netid,
-                  const std::string &url = DIRECTORY_BASE_URL,
-                  HttpClient *client = new HttpClient);
+    DirectoryInfo(
+        const std::string &netid,
+        const std::string &url = DIRECTORY_BASE_URL,
+        HttpClient *client = new HttpClient
+    );
 
     /**
      * Fetch the required data and populate this object with it.
@@ -36,9 +38,24 @@ public:
 
     void print(std::ostream &out) const;
 
-    bool populated;
+#define GEN_GETATTR(type, name)                                               \
+    [[nodiscard]]                                                             \
+    const type &name() const {                                                \
+        ensure_populated();                                                   \
+        return m_##name;                                                      \
+    }
+
+    GEN_GETATTR(std::string, netid);
+    GEN_GETATTR(std::string, name);
+    GEN_GETATTR(std::string, major);
+    GEN_GETATTR(StudentLevel, level);
+
+#undef GEN_GETATTR
+
+    const bool &populated() const { return m_populated; }
 
 private:
+    bool m_populated;
     std::string m_url;
     std::string m_netid;
     std::string m_name;
@@ -58,7 +75,21 @@ private:
 
     StudentLevel levelFromString(const std::string &level) const;
 
+    void ensure_populated() const;
+
     friend std::ostream &operator<<(std::ostream &out, const DirectoryInfo &info);
+};
+
+template<>
+struct std::formatter<StudentLevel, char> {
+    constexpr auto parse(std::format_parse_context &ctx) {
+        return ctx.begin();
+    }
+
+    std::format_context::iterator format(
+        const StudentLevel &level,
+        std::format_context &ctx
+    ) const;
 };
 
 std::ostream &operator<<(std::ostream &out, const DirectoryInfo &info);

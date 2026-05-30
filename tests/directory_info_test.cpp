@@ -40,7 +40,18 @@ Student's Level: SO<br/>
 
 TEST(DirectoryInfo, BeginsUnpopulated) {
     DirectoryInfo info("peter");
-    EXPECT_FALSE(info.populated);
+    EXPECT_FALSE(info.populated());
+}
+
+TEST(DirectoryInfo, UnpopulatedAccessThrows) {
+    DirectoryInfo info("peter");
+    std::string tmp;
+    StudentLevel level_tmp;
+
+    EXPECT_THROW(tmp = info.netid(), std::runtime_error);
+    EXPECT_THROW(tmp = info.name(), std::runtime_error);
+    EXPECT_THROW(tmp = info.major(), std::runtime_error);
+    EXPECT_THROW(level_tmp = info.level(), std::runtime_error);
 }
 
 TEST(DirectoryInfo, RedirectsBecomeMissingPeople) {
@@ -72,7 +83,7 @@ TEST(DirectoryInfo, FetchingPopulates) {
     DirectoryInfo info("peter", DIRECTORY_BASE_URL, &client);
     DirectoryFetchResult result = info.fetch();
     EXPECT_EQ(result, DirectoryFetchResult::OK);
-    EXPECT_TRUE(info.populated);
+    EXPECT_TRUE(info.populated());
 }
 
 TEST(DirectoryInfo, PrintingUnpopulated) {
@@ -80,7 +91,7 @@ TEST(DirectoryInfo, PrintingUnpopulated) {
     std::stringstream s;
 
     info.print(s);
-    EXPECT_FALSE(info.populated);
+    EXPECT_FALSE(info.populated());
     EXPECT_TRUE(s.str().find("unpopulated"));
 }
 
