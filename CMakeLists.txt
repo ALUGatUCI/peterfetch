@@ -57,7 +57,6 @@ target_sources(
     src/section.cpp
     src/artwork.cpp
     src/section_list.cpp
-    src/iter_utils.cpp
 )
 
 include(cmake/cpr.cmake)

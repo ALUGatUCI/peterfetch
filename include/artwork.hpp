@@ -1,3 +1,5 @@
+/** @file */
+
 #ifndef ARTWORK_HPP
 #define ARTWORK_HPP
 

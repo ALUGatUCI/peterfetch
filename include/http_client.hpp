@@ -1,3 +1,5 @@
+/** @file */
+
 #ifndef HTTP_CLIENT_HPP
 #define HTTP_CLIENT_HPP
 
