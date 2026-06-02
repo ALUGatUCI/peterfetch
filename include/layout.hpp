@@ -1,3 +1,5 @@
+/** @file */
+
 #ifndef LAYOUT_HPP
 #define LAYOUT_HPP
 

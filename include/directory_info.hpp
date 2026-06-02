@@ -1,3 +1,5 @@
+/** @file */
+
 #ifndef DIRECTORY_INFO_HPP
 #define DIRECTORY_INFO_HPP
 

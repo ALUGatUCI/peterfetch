@@ -1,14 +1,20 @@
+/** @file */
+
 #ifndef SECTION_HPP
 #define SECTION_HPP
 
 #include <iterator>
 #include <string>
-#include <utility>
 
 #include "directory_info.hpp"
 
+/**
+ * Basic type indicator for controlling line output formats.
+ */
 enum class SectionLineType {
+    /** A line with a `key: value` format */
     KV,
+    /** A blank line... what did you expect */
     BLANK,
 };
 

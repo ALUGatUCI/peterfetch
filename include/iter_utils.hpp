@@ -4,6 +4,8 @@
  * Because C++23 is not used in this project, this provides implementations
  * roughly equivalent in functionality to certain features from the ranges
  * library.
+ *
+ * @file
  */
 
 #ifndef ITER_UTILS_HPP
@@ -15,9 +17,10 @@
 #include <utility>
 
 /**
- * Zip two ranges that both yield values of type `T` and produce a single
- * range which yields values of `std::pair<T, T>`. If one range is longer
- * than the other, the result is truncated to the shortest of the two.
+ * Zip two ranges that yield values of type `L` and `R`, respectively, and
+ * produce a single range which yields values of `std::pair<L, R>`. If one
+ * range is longer than the other, the result is truncated to the shortest of
+ * the two.
  */
 template<std::ranges::forward_range Left, std::ranges::forward_range Right>
 class ZipRange {
