@@ -81,7 +81,7 @@ public:
         bool operator==(const iterator &other) const {
             return m_left_iter == other.m_left_iter
                    && m_right_iter == other.m_right_iter;
-        };
+        }
 
         value_type operator*() const {
             return std::make_pair(*m_left_iter, *m_right_iter);

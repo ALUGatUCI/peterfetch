@@ -4,6 +4,7 @@
 #define SECTION_HPP
 
 #include <iterator>
+#include <memory>
 #include <string>
 
 #include "directory_info.hpp"
@@ -41,9 +42,9 @@ public:
 
 class SectionList {
 public:
-    SectionList(std::vector<Section*> sections);
+    SectionList(std::vector<std::shared_ptr<Section>> sections);
 
-    void add(Section *section);
+    void add(std::shared_ptr<Section> section);
 
     struct iterator {
         using iterator_category = std::forward_iterator_tag;
@@ -72,7 +73,7 @@ public:
     iterator end() const;
 
 private:
-    std::vector<Section*> m_sections;
+    std::vector<std::shared_ptr<Section>> m_sections;
 
     std::size_t size() const;
 };

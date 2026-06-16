@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <array>
 #include <iostream>
+#include <memory>
 #include <ranges>
 
 #include "artwork.hpp"
@@ -16,7 +17,7 @@ TextLayout::TextLayout(const Artwork &art)
     , m_sections({})
 {}
 
-void TextLayout::addSection(Section *section) {
+void TextLayout::addSection(shared_ptr<Section> section) {
     m_sections.add(section);
 }
 
@@ -25,8 +26,7 @@ SectionList TextLayout::produce_padded_section() const {
     size_t num_padding = max(m_art.artwork_lines() - section_lines, 0UL);
     SectionList sections { {} };
 
-    // TODO: migrate everything to smart pointers
-    BlankSection *padding_section = new BlankSection { num_padding };
+    auto padding_section = make_shared<BlankSection>(num_padding);
     sections.add(padding_section);
 
     return sections;
@@ -35,7 +35,9 @@ SectionList TextLayout::produce_padded_section() const {
 void TextLayout::print(ostream &out) const {
     string padding("  ");
     SectionList padding_section = produce_padded_section();
-    auto sections = array { m_sections, padding_section } | views::join | views::common;
+    auto sections = array { m_sections, padding_section }
+        | views::join
+        | views::common;
     auto zipped = ZipRange { m_art, sections };
 
     for_each(zipped.begin(), zipped.end(), [&] (auto line) {

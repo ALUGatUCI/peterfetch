@@ -35,6 +35,7 @@
           lldb
           gdb
           doxygen
+          llvm # For llvm-symbolizer
         ]);
         CMAKE_GENERATOR = "Ninja";
         CLICOLOR_FORCE = 1;

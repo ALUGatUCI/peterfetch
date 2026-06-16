@@ -1,4 +1,5 @@
 #include <iostream>
+#include <memory>
 #include <optional>
 #include <string>
 
@@ -13,6 +14,7 @@
 #include "directory_info.hpp"
 #include "layout.hpp"
 
+using namespace std;
 using json = nlohmann::json;
 
 static std::optional<CliArgs> handleArgs(int argc, char *argv[]);
@@ -28,12 +30,6 @@ int main(int argc, char *argv[]) {
 
     TextLayout layout({ artwork::UCI, artwork::UCI_OFFSET });
 
-    // std::cout << "\x1b[38;2;254;204;7m"
-    //     << artwork::UCI
-    //     << "\x1b[0m\n";
-
-    // std::cout << args->netid << "\n";
-
     DirectoryInfo base_info { args->netid };
     switch (base_info.fetch()) {
         case DirectoryFetchResult::DOESNT_EXIST:
@@ -46,10 +42,9 @@ int main(int argc, char *argv[]) {
             std::cerr << "Failed to fetch UCI Directory info!\n";
             return 1;
     }
-    DirectoryInfoSection info_section(base_info);
-    layout.addSection(&info_section);
-    // layout.addSection(&info_section);
-    // layout.addSection(&info_section);
+    auto info_section = make_shared<DirectoryInfoSection>(base_info);
+    layout.addSection(info_section);
+    // layout.addSection(info_section);
 
     std::cout << layout;
 

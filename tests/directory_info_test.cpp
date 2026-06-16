@@ -1,5 +1,6 @@
 #include "directory_info.hpp"
 
+#include <memory>
 #include <string>
 #include <sstream>
 
@@ -11,6 +12,7 @@
 using ::testing::Return;
 using ::testing::Exactly;
 using namespace std::string_literals;
+using namespace std;
 
 class MockHttpClient : public HttpClient {
 public:
@@ -55,32 +57,32 @@ TEST(DirectoryInfo, UnpopulatedAccessThrows) {
 }
 
 TEST(DirectoryInfo, RedirectsBecomeMissingPeople) {
-    MockHttpClient client;
+    auto client = make_shared<MockHttpClient>();
     cpr::Response missing_response;
     missing_response.status_code = 302;
     cpr::Url expected_url { DIRECTORY_BASE_URL + "peter.txt"s };
 
-    EXPECT_CALL(client, get(expected_url, false))
+    EXPECT_CALL(*client, get(expected_url, false))
         .Times(Exactly(1))
         .WillRepeatedly(Return(missing_response));
 
-    DirectoryInfo info("peter", DIRECTORY_BASE_URL, &client);
+    DirectoryInfo info("peter", DIRECTORY_BASE_URL, client);
     DirectoryFetchResult result = info.fetch();
     EXPECT_EQ(result, DirectoryFetchResult::DOESNT_EXIST);
 }
 
 TEST(DirectoryInfo, FetchingPopulates) {
-    MockHttpClient client;
+    auto client = make_shared<MockHttpClient>();
     cpr::Response filled_response;
     filled_response.status_code = 200;
     filled_response.text = PROPER_RESPONSE;
     cpr::Url expected_url { DIRECTORY_BASE_URL + "peter.txt"s };
 
-    EXPECT_CALL(client, get(expected_url, false))
+    EXPECT_CALL(*client, get(expected_url, false))
         .Times(Exactly(1))
         .WillRepeatedly(Return(filled_response));
 
-    DirectoryInfo info("peter", DIRECTORY_BASE_URL, &client);
+    DirectoryInfo info("peter", DIRECTORY_BASE_URL, client);
     DirectoryFetchResult result = info.fetch();
     EXPECT_EQ(result, DirectoryFetchResult::OK);
     EXPECT_TRUE(info.populated());
@@ -96,17 +98,17 @@ TEST(DirectoryInfo, PrintingUnpopulated) {
 }
 
 TEST(DirectoryInfo, PrintingPopulated) {
-    MockHttpClient client;
+    auto client = make_shared<MockHttpClient>();
     cpr::Response filled_response;
     filled_response.status_code = 200;
     filled_response.text = PROPER_RESPONSE;
     cpr::Url expected_url { DIRECTORY_BASE_URL + "peter.txt"s };
 
-    EXPECT_CALL(client, get(expected_url, false))
+    EXPECT_CALL(*client, get(expected_url, false))
         .Times(Exactly(1))
         .WillRepeatedly(Return(filled_response));
 
-    DirectoryInfo info("peter", DIRECTORY_BASE_URL, &client);
+    DirectoryInfo info("peter", DIRECTORY_BASE_URL, client);
     DirectoryFetchResult result = info.fetch();
     EXPECT_EQ(result, DirectoryFetchResult::OK);
 

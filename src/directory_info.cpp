@@ -13,8 +13,10 @@
 
 #include "http_client.hpp"
 
-DirectoryInfo::DirectoryInfo(const std::string &netid, const std::string &url,
-                             HttpClient *client)
+using namespace std;
+
+DirectoryInfo::DirectoryInfo(const string &netid, const string &url,
+                             shared_ptr<HttpClient> client)
     : m_netid(netid)
     , m_url(url + netid + ".txt")
     , m_client(client)
@@ -24,7 +26,7 @@ DirectoryInfo::DirectoryInfo(const std::string &netid, const std::string &url,
 
 void DirectoryInfo::ensure_populated() const {
     if (!m_populated) {
-        throw std::runtime_error("Attempted access to unpopulated data");
+        throw runtime_error("Attempted access to unpopulated data");
     }
 }
 
@@ -42,7 +44,7 @@ DirectoryFetchResult DirectoryInfo::fetch() {
     return DirectoryFetchResult::OK;
 }
 
-void DirectoryInfo::print(std::ostream &out) const {
+void DirectoryInfo::print(ostream &out) const {
     if (m_populated)
         out << "DirectoryInfo {"
             << " netid=" << m_netid
@@ -54,26 +56,26 @@ void DirectoryInfo::print(std::ostream &out) const {
         out << "DirectoryInfo { unpopulated }";
 }
 
-int DirectoryInfo::parseRaw(const std::string &raw) {
-    std::unique_ptr<xmlDoc, void(*)(xmlDocPtr)> doc(
+int DirectoryInfo::parseRaw(const string &raw) {
+    unique_ptr<xmlDoc, void(*)(xmlDocPtr)> doc(
         htmlReadMemory(raw.c_str(), raw.size(), m_url.c_str(), "UTF-8", 0),
         xmlFreeDoc
     );
     if (!doc) {
-        std::cerr << "Unable to parse raw directory info!\n";
+        cerr << "Unable to parse raw directory info!\n";
         return -1;
     }
 
-    std::unique_ptr<xmlXPathContext, void(*)(xmlXPathContextPtr)> xpathCtx(
+    unique_ptr<xmlXPathContext, void(*)(xmlXPathContextPtr)> xpathCtx(
         xmlXPathNewContext(doc.get()),
         xmlXPathFreeContext
     );
     if (!xpathCtx) {
-        std::cerr << "Failed to create an XPath context!\n";
+        cerr << "Failed to create an XPath context!\n";
         return -1;
     }
 
-    std::unique_ptr<xmlXPathObject, void(*)(xmlXPathObjectPtr)> xpathObj(
+    unique_ptr<xmlXPathObject, void(*)(xmlXPathObjectPtr)> xpathObj(
         xmlXPathEvalExpression(
             reinterpret_cast<const xmlChar*>("//body"),
             xpathCtx.get()
@@ -81,13 +83,13 @@ int DirectoryInfo::parseRaw(const std::string &raw) {
         xmlXPathFreeObject
     );
     if(!xpathObj) {
-        std::cerr << "Failed to evaluate XPath expression!\n";
+        cerr << "Failed to evaluate XPath expression!\n";
         return -1;
     }
 
     xmlNodeSetPtr nodeset = xpathObj->nodesetval;
     if (nodeset->nodeNr < 1) {
-        std::cerr << "XPath is missing nodes!\n";
+        cerr << "XPath is missing nodes!\n";
         return -1;
     }
 
@@ -103,15 +105,15 @@ int DirectoryInfo::parseRaw(const std::string &raw) {
 void DirectoryInfo::parseXPath(xmlNodePtr node) {
     for (xmlNodePtr p = node; p->next; p = p->next) {
         if (p->type == XML_TEXT_NODE) {
-            std::string str { reinterpret_cast<const char *>(p->content) };
+            string str { reinterpret_cast<const char *>(p->content) };
             if (str[0] == '\n')
                 str.erase(0, 1);
 
             // Rework this to not be a bit less dumb
-            std::size_t split = str.find(": ");
-            std::string_view key { str };
+            size_t split = str.find(": ");
+            string_view key { str };
             key = key.substr(0, split);
-            std::string value { str.substr(split + 2) };
+            string value { str.substr(split + 2) };
 
             if (key == "UCInetID") {
                 m_netid = value;
@@ -126,7 +128,7 @@ void DirectoryInfo::parseXPath(xmlNodePtr node) {
     }
 }
 
-StudentLevel DirectoryInfo::levelFromString(const std::string &level) const {
+StudentLevel DirectoryInfo::levelFromString(const string &level) const {
     if (level == "SR") {
         return StudentLevel::SENIOR;
     } else if (level == "JR") {
@@ -138,30 +140,30 @@ StudentLevel DirectoryInfo::levelFromString(const std::string &level) const {
     }
 }
 
-std::format_context::iterator std::formatter<StudentLevel, char>::format(
+format_context::iterator formatter<StudentLevel, char>::format(
     const StudentLevel &level,
-    std::format_context &ctx
+    format_context &ctx
 ) const {
     switch (level) {
         case StudentLevel::FRESHMAN:
-            return std::format_to(ctx.out(), "Freshman");
+            return format_to(ctx.out(), "Freshman");
         case StudentLevel::SOPHOMORE:
-            return std::format_to(ctx.out(), "Sophomore");
+            return format_to(ctx.out(), "Sophomore");
         case StudentLevel::JUNIOR:
-            return std::format_to(ctx.out(), "Junior");
+            return format_to(ctx.out(), "Junior");
         case StudentLevel::SENIOR:
-            return std::format_to(ctx.out(), "Senior");
+            return format_to(ctx.out(), "Senior");
         default:
-            throw std::runtime_error("Invalid StudentLevel");
+            throw runtime_error("Invalid StudentLevel");
     }
 }
 
-std::ostream &operator<<(std::ostream &out, const DirectoryInfo &info) {
+ostream &operator<<(ostream &out, const DirectoryInfo &info) {
     info.print(out);
     return out;
 }
 
-std::ostream &operator<<(std::ostream &out, const StudentLevel &level) {
+ostream &operator<<(ostream &out, const StudentLevel &level) {
     switch (level) {
         case StudentLevel::FRESHMAN:
             out << "FRESHMAN";

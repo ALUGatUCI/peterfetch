@@ -3,6 +3,7 @@
 #ifndef DIRECTORY_INFO_HPP
 #define DIRECTORY_INFO_HPP
 
+#include <memory>
 #include <string>
 
 #include <libxml/tree.h>
@@ -30,7 +31,7 @@ public:
     DirectoryInfo(
         const std::string &netid,
         const std::string &url = DIRECTORY_BASE_URL,
-        HttpClient *client = new HttpClient
+        std::shared_ptr<HttpClient> client = std::make_shared<HttpClient>()
     );
 
     /**
@@ -63,7 +64,7 @@ private:
     std::string m_name;
     std::string m_major;
     StudentLevel m_level;
-    HttpClient *m_client;
+    std::shared_ptr<HttpClient> m_client;
 
     /**
      * Parse the provided raw text and populate this object.

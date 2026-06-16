@@ -4,6 +4,7 @@
 #define LAYOUT_HPP
 
 #include <iosfwd>
+#include <memory>
 
 #include "artwork.hpp"
 #include "section.hpp"
@@ -14,7 +15,7 @@ public:
 
     void print(std::ostream &out) const;
 
-    void addSection(Section *section);
+    void addSection(std::shared_ptr<Section> section);
 
 private:
     SectionList produce_padded_section() const;

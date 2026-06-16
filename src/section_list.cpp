@@ -1,19 +1,17 @@
 #include "section.hpp"
 
-#include <algorithm>
-#include <iostream>
-#include <utility>
+#include <memory>
 #include <ranges>
 #include <vector>
 
 using namespace std;
 using SLIterator = SectionList::iterator;
 
-SectionList::SectionList(vector<Section*> sections)
+SectionList::SectionList(vector<shared_ptr<Section>> sections)
     : m_sections { sections }
 {}
 
-void SectionList::add(Section *section) {
+void SectionList::add(shared_ptr<Section> section) {
     m_sections.push_back(section);
 }
 
