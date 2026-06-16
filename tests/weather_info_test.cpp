@@ -1,5 +1,7 @@
 #include "weather_info.hpp"
 
+#include <memory>
+
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 
@@ -7,6 +9,7 @@
 
 using ::testing::_;
 using ::testing::Return;
+using namespace std;
 
 class MockHttpClient : public HttpClient {
 public:
@@ -46,7 +49,7 @@ TEST(WeatherInfo, BeginsUnpopulated) {
 }
 
 TEST(WeatherInfo, Fetch) {
-    MockHttpClient mockClient;
+    auto mockClient = make_shared<MockHttpClient>();
 
     cpr::Response pointsResponse;
     pointsResponse.status_code = 200;
@@ -56,12 +59,12 @@ TEST(WeatherInfo, Fetch) {
     hourlyResponse.status_code = 200;
     hourlyResponse.text = PROPER_RESPONSE;
 
-    EXPECT_CALL(mockClient, get(_, _))
+    EXPECT_CALL(*mockClient, get(_, _))
         .WillOnce(Return(pointsResponse))
         .WillOnce(Return(hourlyResponse));
 
     WeatherInfo info{WEATHER_BASE_URL, DEFAULT_LATITUDE, DEFAULT_LONGITUDE,
-                     &mockClient};
+                     mockClient};
 
     EXPECT_EQ(info.fetch(), WeatherFetchResult::OK);
     EXPECT_TRUE(info.populated());
@@ -73,34 +76,34 @@ TEST(WeatherInfo, Fetch) {
 }
 
 TEST(WeatherInfo, FetchFailedPoints) {
-    MockHttpClient mockClient;
+    auto mockClient = make_shared<MockHttpClient>();
 
     cpr::Response pointsResponse;
     pointsResponse.status_code = 404;
     pointsResponse.text = FAILED_POINTS_RESPONSE;
 
-    EXPECT_CALL(mockClient, get(_, _))
+    EXPECT_CALL(*mockClient, get(_, _))
         .WillOnce(Return(pointsResponse));
 
     WeatherInfo info{WEATHER_BASE_URL, DEFAULT_LATITUDE, DEFAULT_LONGITUDE,
-                     &mockClient};
+                     mockClient};
 
     EXPECT_EQ(info.fetch(), WeatherFetchResult::INVALID_RESPONSE);
     EXPECT_FALSE(info.populated());
 }
 
 TEST(WeatherInfo, FailParse) {
-    MockHttpClient mockClient;
+    auto mockClient = make_shared<MockHttpClient>();
 
     cpr::Response pointsResponse;
     pointsResponse.status_code = 200;
     pointsResponse.text = FAILED_POINTS_RESPONSE;
 
-    EXPECT_CALL(mockClient, get(_, _))
+    EXPECT_CALL(*mockClient, get(_, _))
         .WillOnce(Return(pointsResponse));
 
     WeatherInfo info{WEATHER_BASE_URL, DEFAULT_LATITUDE, DEFAULT_LONGITUDE,
-                     &mockClient};
+                     mockClient};
 
     EXPECT_EQ(info.fetch(), WeatherFetchResult::PARSING_FAILED);
     EXPECT_FALSE(info.populated());

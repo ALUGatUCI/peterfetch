@@ -2,6 +2,7 @@
 #define WEATHER_INFO_HPP
 
 #include <string>
+#include <memory>
 
 #include <nlohmann/json.hpp>
 
@@ -23,7 +24,9 @@ public:
     WeatherInfo(const std::string& url = WEATHER_BASE_URL,
                 const double latitude = DEFAULT_LATITUDE,
                 const double longitude = DEFAULT_LONGITUDE,
-                HttpClient *client = new HttpClient());
+                std::shared_ptr<HttpClient> client = std::make_shared<HttpClient>());
+
+    void ensure_populated() const;
 
     /* Fetch weather data and populate the weather info */
     WeatherFetchResult fetch();
@@ -44,7 +47,7 @@ private:
     int m_precipitation;
     std::string m_wind;
     int m_humidity;
-    HttpClient *m_client;
+    std::shared_ptr<HttpClient> m_client;
 
     bool m_populated;
 
