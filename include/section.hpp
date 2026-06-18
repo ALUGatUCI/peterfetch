@@ -46,7 +46,8 @@ public:
 
     void add(std::shared_ptr<Section> section);
 
-    struct iterator {
+    class iterator {
+    public:
         using iterator_category = std::forward_iterator_tag;
         using difference_type = std::ptrdiff_t;
         using value_type = SectionLine;
@@ -58,17 +59,22 @@ public:
             , offset { start_offset }
         {}
 
-        const SectionList *ptr;
-        std::size_t index;
-        std::size_t offset;
-
         iterator &operator++();
         iterator operator++(int);
         difference_type operator-(const iterator &rhs);
         bool operator==(const iterator &other) const;
         value_type operator*() const;
+
+    private:
+        const SectionList *ptr;
+        std::size_t index;
+        std::size_t offset;
     };
 
+    /**
+     * NOTE: If a section list contains no sections with a nonzero number of
+     * lines then this is equivalent to call to end()
+     */
     iterator begin() const;
     iterator end() const;
 
@@ -76,6 +82,12 @@ private:
     std::vector<std::shared_ptr<Section>> m_sections;
 
     std::size_t size() const;
+
+    /**
+     * Find the index of the first section which contains a nonzero number of
+     * lines.
+     */
+    std::size_t first_index(std::size_t start_index) const;
 };
 
 static_assert(std::forward_iterator<SectionList::iterator>);

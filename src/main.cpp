@@ -44,7 +44,6 @@ int main(int argc, char *argv[]) {
     }
     auto info_section = make_shared<DirectoryInfoSection>(base_info);
     layout.addSection(info_section);
-    // layout.addSection(info_section);
 
     std::cout << layout;
 

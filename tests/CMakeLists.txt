@@ -32,3 +32,9 @@ register_test(directory_info
 register_test(iter_utils
     iter_utils_test.cpp
 )
+register_test(section_list
+    section_list_test.cpp
+    ../src/section_list.cpp
+    # ../src/section.cpp
+    # ../src/directory_info.cpp
+)

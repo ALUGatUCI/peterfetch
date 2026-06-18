@@ -16,7 +16,7 @@ void SectionList::add(shared_ptr<Section> section) {
 }
 
 SLIterator SectionList::begin() const {
-    return SLIterator { this, 0, 0 };
+    return SLIterator { this, first_index(0), 0 };
 }
 
 SLIterator SectionList::end() const {
@@ -32,13 +32,29 @@ size_t SectionList::size() const {
     return result;
 }
 
+size_t SectionList::first_index(size_t start_index) const {
+    size_t end_index = m_sections.size();
+
+    if (start_index < 0 || start_index >= end_index)
+        return end_index;
+
+    size_t index = start_index;
+    while (index < end_index && m_sections[index]->size() == 0)
+        ++index;
+
+    return index;
+}
+
 SLIterator &SLIterator::operator++() {
     if (!ptr)
         return *this;
 
+
     size_t size = ptr->m_sections[index]->size();
-    index += (offset + 1) / size;
-    offset = (offset + 1) % size;
+    if (++offset >= size) {
+        index = ptr->first_index(index + 1);
+        offset = 0;
+    }
 
     return *this;
 }
@@ -50,8 +66,10 @@ SLIterator SLIterator::operator++(int) {
     SLIterator prev { *this };
 
     size_t size = ptr->m_sections[index]->size();
-    index += (offset + 1) / size;
-    offset = (offset + 1) % size;
+    if (++offset >= size) {
+        index = ptr->first_index(index + 1);
+        offset = 0;
+    }
 
     return prev;
 }

@@ -30,7 +30,8 @@ public:
         , m_right { right }
     {}
 
-    struct iterator {
+    class iterator {
+    public:
         using left_iter_t = std::ranges::iterator_t<Left>;
         using right_iter_t = std::ranges::iterator_t<Right>;
         using iterator_category = std::forward_iterator_tag;
@@ -46,6 +47,31 @@ public:
             , m_right_end_iter { right_end }
         {}
 
+        iterator &operator++() {
+            ++m_left_iter;
+            ++m_right_iter;
+            maybe_complete();
+
+            return *this;
+        };
+        iterator operator++(int) {
+            left_iter_t l = m_left_iter++;
+            right_iter_t r = m_right_iter++;
+            maybe_complete();
+
+            return { l, m_left_iter, r, m_right_iter };
+        }
+
+        bool operator==(const iterator &other) const {
+            return m_left_iter == other.m_left_iter
+                   && m_right_iter == other.m_right_iter;
+        }
+
+        value_type operator*() const {
+            return std::make_pair(*m_left_iter, *m_right_iter);
+        }
+
+    private:
         left_iter_t m_left_iter;
         left_iter_t m_left_end_iter;
         right_iter_t m_right_iter;
@@ -61,30 +87,6 @@ public:
                 m_right_iter = m_right_end_iter;
             else if (m_right_iter == m_right_end_iter)
                 m_left_iter = m_left_end_iter;
-        }
-
-        iterator &operator++() {
-            ++m_left_iter;
-            ++m_right_iter;
-            maybe_complete();
-
-            return *this;
-        };
-        iterator operator++(int) {
-            left_iter_t l = m_left_iter++;
-            right_iter_t r = m_right_iter++;
-            maybe_complete();
-
-            return { l, r };
-        }
-
-        bool operator==(const iterator &other) const {
-            return m_left_iter == other.m_left_iter
-                   && m_right_iter == other.m_right_iter;
-        }
-
-        value_type operator*() const {
-            return std::make_pair(*m_left_iter, *m_right_iter);
         }
     };
 

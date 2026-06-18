@@ -23,7 +23,9 @@ void TextLayout::addSection(shared_ptr<Section> section) {
 
 SectionList TextLayout::produce_padded_section() const {
     size_t section_lines = m_sections.end() - m_sections.begin();
-    size_t num_padding = max(m_art.artwork_lines() - section_lines, 0UL);
+    size_t num_padding = m_art.artwork_lines() >= section_lines
+                             ? m_art.artwork_lines() - section_lines
+                             : 0UL;
     SectionList sections { {} };
 
     auto padding_section = make_shared<BlankSection>(num_padding);

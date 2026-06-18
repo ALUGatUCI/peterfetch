@@ -36,3 +36,16 @@ TEST(IterUtils, ZipUnEven) {
         EXPECT_EQ(value.first, value.second - 3);
     });
 }
+
+TEST(IterUtils, ZipLargeDifference) {
+    string left_small { "hi" };
+    string left_large { "hello big world!" };
+    vector<int> right_small { 1, 2, 3, 4 };
+    vector<int> right_large { 1, 2, 3, 4, 5, 6, 7 };
+
+    ZipRange zipped_left = ZipRange { left_large, right_small };
+    ZipRange zipped_right = ZipRange { left_small, right_large };
+
+    EXPECT_EQ(ranges::distance(zipped_left), 4);
+    EXPECT_EQ(ranges::distance(zipped_right), 2);
+}
