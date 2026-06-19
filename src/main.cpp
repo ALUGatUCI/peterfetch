@@ -28,7 +28,7 @@ int main(int argc, char *argv[]) {
     // Mandatory library initialization
     LIBXML_TEST_VERSION;
 
-    TextLayout layout({ artwork::UCI, artwork::UCI_OFFSET });
+    TextLayout layout({ artwork::UCI, artwork::UCI_OFFSET, artwork::UCI_FG, artwork::UCI_BG });
 
     DirectoryInfo base_info { args->netid };
     switch (base_info.fetch()) {

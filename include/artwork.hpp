@@ -7,10 +7,12 @@
 #include <ranges>
 #include <string>
 #include <vector>
+#include <map>
 
 class Artwork {
 public:
     Artwork(const std::string &raw, int offset);
+    Artwork(const std::string &raw, int offset, const char *raw_fg, const char *raw_bg);
 
     /**
      * An infinite iterator over the artwork's lines.
@@ -55,9 +57,11 @@ public:
         value_type operator*() const;
     };
 
-    iterator begin()const;
+    iterator begin() const;
     iterator end() const;
     std::size_t artwork_lines() const { return lines.size(); };
+    std::vector<std::string> split_lines(std::string_view raw);
+    void color(const char *fg, const char *bg);
 
 private:
     std::vector<std::string> lines;
@@ -78,6 +82,49 @@ constexpr const char *UCI = static_cast<const char*>(R"(
 | |_| | |___ | | 
  \___/ \____|___|
 )") + 1; // Erase the extra newline at the beginning
+
+/**
+ * Contains delimiters for foreground and background colors.
+ *
+ * Delimiters are keys to std::pair<int, int>:
+ * first -> foreground color
+ * second -> bacground color
+ */
+const std::map<char, const std::pair<const int, const int>> COLORS = {
+    {' ', {39, 49}},  // default
+    {'0', {30, 40}},  // black
+    {'1', {31, 41}},  // red
+    {'2', {32, 42}},  // green
+    {'3', {33, 43}},  // yellow
+    {'4', {34, 44}},  // blue
+    {'5', {35, 45}},  // magenta
+    {'6', {36, 46}},  // cyan
+    {'7', {37, 47}},  // white
+    {'8', {90, 100}}, // gray
+    {'9', {91, 101}}, // bright red
+    {'A', {92, 102}}, // bright green
+    {'B', {93, 103}}, // bright yellow
+    {'C', {94, 104}}, // bright blue
+    {'D', {95, 105}}, // bright magenta
+    {'E', {96, 106}}, // bright cyan
+    {'F', {97, 107}}, // bright white
+};
+
+constexpr const char *UCI_FG = static_cast<const char*>(R"(
+ 4   4  4444 444 
+4 4 4 44 44444 44
+4 4 4 4 4    4 4 
+4 444 4 4444 4 4 
+ 44444 4444444444
+)") + 1;
+
+constexpr const char *UCI_BG = static_cast<const char*>(R"(
+                 
+ 3   3 33333 333 
+ 3   3 3      3  
+ 3   3 3      3  
+ 33333 33333 333 
+)") + 1;
 
 }
 

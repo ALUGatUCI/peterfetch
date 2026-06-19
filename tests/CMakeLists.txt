@@ -38,3 +38,7 @@ register_test(section_list
     # ../src/section.cpp
     # ../src/directory_info.cpp
 )
+register_test(artwork
+    artwork_test.cpp
+    ../src/artwork.cpp
+)

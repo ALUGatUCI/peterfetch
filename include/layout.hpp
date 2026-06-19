@@ -22,6 +22,7 @@ private:
 
     Artwork m_art;
     SectionList m_sections;
+    // TODO: Add section field name colors
 };
 
 std::ostream &operator<<(std::ostream &out, const TextLayout &layout);
