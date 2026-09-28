@@ -8,6 +8,7 @@
 #include <string>
 
 #include "directory_info.hpp"
+#include "weather_info.hpp"
 
 /**
  * Basic type indicator for controlling line output formats.
@@ -133,6 +134,24 @@ public:
 
 private:
     const DirectoryInfo &m_info;
+};
+
+class WeatherInfoSection : public Section {
+public:
+    WeatherInfoSection(const WeatherInfo &info);
+
+    /**
+     * @copydoc Section::size()
+     */
+    std::size_t size() const override { return 4; };
+
+    /**
+     * @copydoc Section::at()
+     */
+    SectionLine at(std::size_t offset) const override;
+
+private:
+    const WeatherInfo &m_info;
 };
 
 #endif

@@ -1,5 +1,6 @@
 #include "weather_info.hpp"
 
+#include <format>
 #include <string>
 #include <iostream>
 #include <memory>
@@ -8,20 +9,18 @@
 
 #include "http_client.hpp"
 
-using namespace std;
-
 WeatherInfo::WeatherInfo(const std::string& url,
                          const double latitude,
                          const double longitude,
-                         shared_ptr<HttpClient> client):
-    m_url(url + "points/" + std::to_string(latitude) + "," + std::to_string(longitude)),
-    m_client(client),
-    m_populated(false) {
-}
+                         std::shared_ptr<HttpClient> client)
+    : m_url {std::format("{}/points/{},{}", url, latitude, longitude)}
+    , m_client {client}
+    , m_populated {false}
+{}
 
 void WeatherInfo::ensure_populated() const {
     if (!m_populated) {
-        throw runtime_error("Attempted access to unpopulated data");
+        throw std::runtime_error("Attempted access to unpopulated data");
     }
 }
 

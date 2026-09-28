@@ -13,8 +13,9 @@
 #include "config.hpp"
 #include "directory_info.hpp"
 #include "layout.hpp"
+#include "section.hpp"
+#include "weather_info.hpp"
 
-using namespace std;
 using json = nlohmann::json;
 
 static std::optional<CliArgs> handleArgs(int argc, char *argv[]);
@@ -42,8 +43,27 @@ int main(int argc, char *argv[]) {
             std::cerr << "Failed to fetch UCI Directory info!\n";
             return 1;
     }
-    auto info_section = make_shared<DirectoryInfoSection>(base_info);
+    auto info_section = std::make_shared<DirectoryInfoSection>(base_info);
     layout.addSection(info_section);
+
+    // Eventually, gaps like this should be dynamic and likely config-driven
+    layout.addSection(std::make_shared<BlankSection>(BlankSection {1}));
+
+    WeatherInfo weather_info;
+    switch (weather_info.fetch()) {
+        case WeatherFetchResult::DOESNT_EXIST:
+        case WeatherFetchResult::INVALID_RESPONSE:
+            std::cerr << "Failed to fetch weather info due to an API error!\n";
+            return 1;
+        case WeatherFetchResult::PARSING_FAILED:
+            std::cerr << "Failed to fetch weather info: error while parsing "
+                      << "API response!\n";
+            return 1;
+        case WeatherFetchResult::OK:
+            break;
+    }
+    auto weather_section = std::make_shared<WeatherInfoSection>(weather_info);
+    layout.addSection(weather_section);
 
     std::cout << layout;
 
