@@ -43,7 +43,7 @@ The following primary commit message types are used:
 
 You should probably use one of these.
 
-For example, consider the message for [this](https://github.com/ALUGatUCI/peterfetch/commit/083473add66623c40914456319cefc1f3af0a2b9) commit:
+For example, consider the message for [this](https://git.alugatuci.org/b0x207/peterfetch/commit/083473add66623c40914456319cefc1f3af0a2b9) commit:
 ```
 feat: collect info from UCI Directory
 ```

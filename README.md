@@ -33,6 +33,12 @@ Alternatively, you can directly build with `nix build` and run with `nix run`, s
 
 > Note: To view the build logs easier, use `nix build -L --log-format bar-with-logs`.
 
+If you just want to run things without a local copy, try:
+
+```
+nix run 'git+https://git.alugatuci.org/b0x207/peterfetch.git' -L -- <your UCINetID>
+```
+
 ### Build Commands
 
 You can configure the project with:
