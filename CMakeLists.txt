@@ -57,6 +57,7 @@ target_sources(
     src/section.cpp
     src/artwork.cpp
     src/section_list.cpp
+    src/weather_info.cpp
 )
 
 include(cmake/cpr.cmake)

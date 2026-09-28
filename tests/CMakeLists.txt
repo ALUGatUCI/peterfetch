@@ -42,3 +42,9 @@ register_test(artwork
     artwork_test.cpp
     ../src/artwork.cpp
 )
+
+register_test(weather_info
+    weather_info_test.cpp
+    ../src/http_client.cpp
+    ../src/weather_info.cpp
+)

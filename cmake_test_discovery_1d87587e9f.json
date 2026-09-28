@@ -1,0 +1,22 @@
+{
+  "tests": 2,
+  "name": "AllTests",
+  "testsuites": [
+    {
+      "name": "WeatherInfo",
+      "tests": 2,
+      "testsuite": [
+        {
+          "name": "BeginsUnpopulated",
+          "file": "\/Users\/user\/CLionProjects\/peterfetch\/tests\/weather_info_test.cpp",
+          "line": 12
+        },
+        {
+          "name": "Fetch",
+          "file": "\/Users\/user\/CLionProjects\/peterfetch\/tests\/weather_info_test.cpp",
+          "line": 17
+        }
+      ]
+    }
+  ]
+}
