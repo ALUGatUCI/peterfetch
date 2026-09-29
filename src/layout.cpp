@@ -10,14 +10,12 @@
 #include "iter_utils.hpp"
 #include "section.hpp"
 
-using namespace std;
-
 TextLayout::TextLayout(const Artwork &art)
     : m_art(art)
     , m_sections({})
 {}
 
-void TextLayout::addSection(shared_ptr<Section> section) {
+void TextLayout::addSection(std::shared_ptr<Section> section) {
     m_sections.add(section);
 }
 
@@ -28,21 +26,21 @@ SectionList TextLayout::produce_padded_section() const {
                              : 0UL;
     SectionList sections { {} };
 
-    auto padding_section = make_shared<BlankSection>(num_padding);
+    auto padding_section = std::make_shared<BlankSection>(num_padding);
     sections.add(padding_section);
 
     return sections;
 }
 
-void TextLayout::print(ostream &out) const {
-    string padding("  ");
+void TextLayout::print(std::ostream &out) const {
+    std::string padding("  ");
     SectionList padding_section = produce_padded_section();
-    auto sections = array { m_sections, padding_section }
-        | views::join
-        | views::common;
+    auto sections = std::array { m_sections, padding_section }
+        | std::views::join
+        | std::views::common;
     auto zipped = ZipRange { m_art, sections };
 
-    for_each(zipped.begin(), zipped.end(), [&] (auto line) {
+    std::for_each(zipped.begin(), zipped.end(), [&] (auto line) {
         out << "\x1b[38;2;254;204;7m"
             << padding << line.first << "\x1b[0m" << padding;
 
@@ -52,7 +50,7 @@ void TextLayout::print(ostream &out) const {
     });
 }
 
-ostream &operator<<(ostream &out, const TextLayout &layout) {
+std::ostream &operator<<(std::ostream &out, const TextLayout &layout) {
     layout.print(out);
     return out;
 }

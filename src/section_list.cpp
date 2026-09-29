@@ -4,14 +4,13 @@
 #include <ranges>
 #include <vector>
 
-using namespace std;
 using SLIterator = SectionList::iterator;
 
-SectionList::SectionList(vector<shared_ptr<Section>> sections)
+SectionList::SectionList(std::vector<std::shared_ptr<Section>> sections)
     : m_sections { sections }
 {}
 
-void SectionList::add(shared_ptr<Section> section) {
+void SectionList::add(std::shared_ptr<Section> section) {
     m_sections.push_back(section);
 }
 
@@ -79,22 +78,22 @@ SLIterator::difference_type SLIterator::operator-(const SLIterator &rhs) {
         return 0;
 
     if (ptr != rhs.ptr)
-        throw runtime_error("Subtraction between unrelated iterators!");
+        throw std::runtime_error("Subtraction between unrelated iterators!");
     if (!ptr || !rhs.ptr)
-        throw runtime_error("Cannot subtract with a default-value iterator!");
+        throw std::runtime_error("Cannot subtract with a default-value iterator!");
 
     auto lhs_sections =
         ptr->m_sections
-        | views::transform([] (auto &section) { return section->size(); })
-        | views::take(index);
+        | std::views::transform([] (auto &section) { return section->size(); })
+        | std::views::take(index);
     auto rhs_sections =
         rhs.ptr->m_sections
-        | views::transform([] (auto &section) { return section->size(); })
-        | views::take(rhs.index);
+        | std::views::transform([] (auto &section) { return section->size(); })
+        | std::views::take(rhs.index);
     auto lhs_val =
-        accumulate(lhs_sections.begin(), lhs_sections.end(), 0) + offset;
+        std::accumulate(lhs_sections.begin(), lhs_sections.end(), 0) + offset;
     auto rhs_val =
-        accumulate(rhs_sections.begin(), rhs_sections.end(), 0) + rhs.offset;
+        std::accumulate(rhs_sections.begin(), rhs_sections.end(), 0) + rhs.offset;
 
     return lhs_val - rhs_val;
 }
@@ -105,10 +104,10 @@ bool SLIterator::operator==(const SLIterator &other) const {
 
 SLIterator::value_type SLIterator::operator*() const {
     if (!ptr)
-        throw out_of_range("Can't dereference an default-value iterator");
+        throw std::out_of_range("Can't dereference an default-value iterator");
     if (index >= ptr->m_sections.size())
-        throw out_of_range("iterator index is out of bounds");
+        throw std::out_of_range("iterator index is out of bounds");
     if (offset >= ptr->m_sections[index]->size())
-        throw out_of_range("iterator offset is out of bounds");
+        throw std::out_of_range("iterator offset is out of bounds");
     return ptr->m_sections[index]->at(offset);
 }

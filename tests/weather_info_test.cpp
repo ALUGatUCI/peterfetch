@@ -9,7 +9,6 @@
 
 using ::testing::_;
 using ::testing::Return;
-using namespace std;
 
 class MockHttpClient : public HttpClient {
 public:
@@ -49,7 +48,7 @@ TEST(WeatherInfo, BeginsUnpopulated) {
 }
 
 TEST(WeatherInfo, Fetch) {
-    auto mockClient = make_shared<MockHttpClient>();
+    auto mockClient = std::make_shared<MockHttpClient>();
 
     cpr::Response pointsResponse;
     pointsResponse.status_code = 200;
@@ -76,7 +75,7 @@ TEST(WeatherInfo, Fetch) {
 }
 
 TEST(WeatherInfo, FetchFailedPoints) {
-    auto mockClient = make_shared<MockHttpClient>();
+    auto mockClient = std::make_shared<MockHttpClient>();
 
     cpr::Response pointsResponse;
     pointsResponse.status_code = 404;
@@ -93,7 +92,7 @@ TEST(WeatherInfo, FetchFailedPoints) {
 }
 
 TEST(WeatherInfo, FailParse) {
-    auto mockClient = make_shared<MockHttpClient>();
+    auto mockClient = std::make_shared<MockHttpClient>();
 
     cpr::Response pointsResponse;
     pointsResponse.status_code = 200;

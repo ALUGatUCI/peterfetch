@@ -12,7 +12,6 @@
 using ::testing::Return;
 using ::testing::Exactly;
 using namespace std::string_literals;
-using namespace std;
 
 class MockHttpClient : public HttpClient {
 public:
@@ -57,7 +56,7 @@ TEST(DirectoryInfo, UnpopulatedAccessThrows) {
 }
 
 TEST(DirectoryInfo, RedirectsBecomeMissingPeople) {
-    auto client = make_shared<MockHttpClient>();
+    auto client = std::make_shared<MockHttpClient>();
     cpr::Response missing_response;
     missing_response.status_code = 302;
     cpr::Url expected_url { DIRECTORY_BASE_URL + "peter.txt"s };
@@ -72,7 +71,7 @@ TEST(DirectoryInfo, RedirectsBecomeMissingPeople) {
 }
 
 TEST(DirectoryInfo, FetchingPopulates) {
-    auto client = make_shared<MockHttpClient>();
+    auto client = std::make_shared<MockHttpClient>();
     cpr::Response filled_response;
     filled_response.status_code = 200;
     filled_response.text = PROPER_RESPONSE;
@@ -98,7 +97,7 @@ TEST(DirectoryInfo, PrintingUnpopulated) {
 }
 
 TEST(DirectoryInfo, PrintingPopulated) {
-    auto client = make_shared<MockHttpClient>();
+    auto client = std::make_shared<MockHttpClient>();
     cpr::Response filled_response;
     filled_response.status_code = 200;
     filled_response.text = PROPER_RESPONSE;
