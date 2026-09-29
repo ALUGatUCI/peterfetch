@@ -1,0 +1,30 @@
+---
+BasedOnStyle: LLVM
+ColumnLimit: 80
+IndentWidth: 4
+
+FixNamespaceComments: true
+SpaceBeforeCpp11BracedList: true
+Cpp11BracedListStyle: true
+BinPackLongBracedList: false
+AlignArrayOfStructures: Left
+AlignAfterOpenBracket: BlockIndent
+BreakBeforeBinaryOperators: NonAssignment
+
+# Avoid putting function return types on their own lines
+BreakAfterReturnType: Automatic
+PenaltyReturnTypeOnItsOwnLine: 1000000
+
+# Make constructors consistent
+BreakConstructorInitializers: BeforeComma
+PackConstructorInitializers: Never
+
+# Just pick a brace style and stick with it
+BreakBeforeBraces: Allman
+
+# Always put template declarations on a separate line
+BreakTemplateDeclarations: Yes
+
+# Do things the C++ way and not C-style K&R
+PointerAlignment: Left
+DerivePointerAlignment: false

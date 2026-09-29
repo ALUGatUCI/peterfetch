@@ -5,7 +5,8 @@
 
 #include <args.hxx>
 
-struct CliArgs {
+struct CliArgs
+{
     std::string netid;
 };
 

@@ -1,25 +1,27 @@
 #include "directory_info.hpp"
 
 #include <memory>
-#include <string>
 #include <sstream>
+#include <string>
 
-#include <gtest/gtest.h>
 #include <gmock/gmock.h>
+#include <gtest/gtest.h>
 
 #include "http_client.hpp"
 
-using ::testing::Return;
 using ::testing::Exactly;
+using ::testing::Return;
 using namespace std::string_literals;
 
-class MockHttpClient : public HttpClient {
-public:
-    MOCK_METHOD(cpr::Response, get, (const cpr::Url& url, bool redirect),
-                (override));
+class MockHttpClient : public HttpClient
+{
+  public:
+    MOCK_METHOD(
+        cpr::Response, get, (const cpr::Url& url, bool redirect), (override)
+    );
 };
 
-constexpr const char *PROPER_RESPONSE = R"(
+constexpr const char* PROPER_RESPONSE = R"(
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" class="gr__directory_uci_edu">
@@ -39,12 +41,14 @@ Student's Level: SO<br/>
 </html>
 )";
 
-TEST(DirectoryInfo, BeginsUnpopulated) {
+TEST(DirectoryInfo, BeginsUnpopulated)
+{
     DirectoryInfo info("peter");
     EXPECT_FALSE(info.populated());
 }
 
-TEST(DirectoryInfo, UnpopulatedAccessThrows) {
+TEST(DirectoryInfo, UnpopulatedAccessThrows)
+{
     DirectoryInfo info("peter");
     std::string tmp;
     StudentLevel level_tmp;
@@ -55,11 +59,12 @@ TEST(DirectoryInfo, UnpopulatedAccessThrows) {
     EXPECT_THROW(level_tmp = info.level(), std::runtime_error);
 }
 
-TEST(DirectoryInfo, RedirectsBecomeMissingPeople) {
+TEST(DirectoryInfo, RedirectsBecomeMissingPeople)
+{
     auto client = std::make_shared<MockHttpClient>();
     cpr::Response missing_response;
     missing_response.status_code = 302;
-    cpr::Url expected_url { DIRECTORY_BASE_URL + "peter.txt"s };
+    cpr::Url expected_url {DIRECTORY_BASE_URL + "peter.txt"s};
 
     EXPECT_CALL(*client, get(expected_url, false))
         .Times(Exactly(1))
@@ -70,12 +75,13 @@ TEST(DirectoryInfo, RedirectsBecomeMissingPeople) {
     EXPECT_EQ(result, DirectoryFetchResult::DOESNT_EXIST);
 }
 
-TEST(DirectoryInfo, FetchingPopulates) {
+TEST(DirectoryInfo, FetchingPopulates)
+{
     auto client = std::make_shared<MockHttpClient>();
     cpr::Response filled_response;
     filled_response.status_code = 200;
     filled_response.text = PROPER_RESPONSE;
-    cpr::Url expected_url { DIRECTORY_BASE_URL + "peter.txt"s };
+    cpr::Url expected_url {DIRECTORY_BASE_URL + "peter.txt"s};
 
     EXPECT_CALL(*client, get(expected_url, false))
         .Times(Exactly(1))
@@ -87,7 +93,8 @@ TEST(DirectoryInfo, FetchingPopulates) {
     EXPECT_TRUE(info.populated());
 }
 
-TEST(DirectoryInfo, PrintingUnpopulated) {
+TEST(DirectoryInfo, PrintingUnpopulated)
+{
     DirectoryInfo info("peter");
     std::stringstream s;
 
@@ -96,12 +103,13 @@ TEST(DirectoryInfo, PrintingUnpopulated) {
     EXPECT_TRUE(s.str().find("unpopulated"));
 }
 
-TEST(DirectoryInfo, PrintingPopulated) {
+TEST(DirectoryInfo, PrintingPopulated)
+{
     auto client = std::make_shared<MockHttpClient>();
     cpr::Response filled_response;
     filled_response.status_code = 200;
     filled_response.text = PROPER_RESPONSE;
-    cpr::Url expected_url { DIRECTORY_BASE_URL + "peter.txt"s };
+    cpr::Url expected_url {DIRECTORY_BASE_URL + "peter.txt"s};
 
     EXPECT_CALL(*client, get(expected_url, false))
         .Times(Exactly(1))

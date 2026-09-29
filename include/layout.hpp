@@ -9,15 +9,16 @@
 #include "artwork.hpp"
 #include "section.hpp"
 
-class TextLayout {
-public:
-    TextLayout(const Artwork &art);
+class TextLayout
+{
+  public:
+    TextLayout(const Artwork& art);
 
-    void print(std::ostream &out) const;
+    void print(std::ostream& out) const;
 
     void addSection(std::shared_ptr<Section> section);
 
-private:
+  private:
     SectionList produce_padded_section() const;
 
     Artwork m_art;
@@ -25,6 +26,6 @@ private:
     // TODO: Add section field name colors
 };
 
-std::ostream &operator<<(std::ostream &out, const TextLayout &layout);
+std::ostream& operator<<(std::ostream& out, const TextLayout& layout);
 
 #endif

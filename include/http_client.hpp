@@ -5,15 +5,16 @@
 
 #include <cpr/cpr.h>
 
-class HttpClient {
-public:
+class HttpClient
+{
+  public:
     HttpClient(cpr::Header headers = {});
 
     virtual cpr::Response get(const cpr::Url& url, bool redirect = true);
 
     virtual ~HttpClient() = default;
 
-private:
+  private:
     cpr::Header m_headers;
 };
 

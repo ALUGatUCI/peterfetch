@@ -13,21 +13,24 @@
 /**
  * Basic type indicator for controlling line output formats.
  */
-enum class SectionLineType {
+enum class SectionLineType
+{
     /** A line with a `key: value` format */
     KV,
     /** A blank line... what did you expect */
     BLANK,
 };
 
-struct SectionLine {
+struct SectionLine
+{
     std::string label;
     std::string value;
     SectionLineType type;
 };
 
-class Section {
-public:
+class Section
+{
+  public:
     /**
      * Get the number of lines in this section
      */
@@ -41,33 +44,38 @@ public:
     virtual SectionLine at(std::size_t offset) const = 0;
 };
 
-class SectionList {
-public:
+class SectionList
+{
+  public:
     SectionList(std::vector<std::shared_ptr<Section>> sections);
 
     void add(std::shared_ptr<Section> section);
 
-    class iterator {
-    public:
+    class iterator
+    {
+      public:
         using iterator_category = std::forward_iterator_tag;
         using difference_type = std::ptrdiff_t;
         using value_type = SectionLine;
 
-        iterator(const SectionList *p = nullptr, std::size_t start_index = 0,
-                 std::size_t start_offset = 0)
-            : ptr { p }
-            , index { start_index }
-            , offset { start_offset }
-        {}
+        iterator(
+            const SectionList* p = nullptr, std::size_t start_index = 0,
+            std::size_t start_offset = 0
+        )
+            : ptr {p}
+            , index {start_index}
+            , offset {start_offset}
+        {
+        }
 
-        iterator &operator++();
+        iterator& operator++();
         iterator operator++(int);
-        difference_type operator-(const iterator &rhs);
-        bool operator==(const iterator &other) const;
+        difference_type operator-(const iterator& rhs);
+        bool operator==(const iterator& other) const;
         value_type operator*() const;
 
-    private:
-        const SectionList *ptr;
+      private:
+        const SectionList* ptr;
         std::size_t index;
         std::size_t offset;
     };
@@ -79,7 +87,7 @@ public:
     iterator begin() const;
     iterator end() const;
 
-private:
+  private:
     std::vector<std::shared_ptr<Section>> m_sections;
 
     std::size_t size() const;
@@ -94,11 +102,13 @@ private:
 static_assert(std::forward_iterator<SectionList::iterator>);
 static_assert(std::ranges::forward_range<SectionList>);
 
-class BlankSection : public Section {
-public:
+class BlankSection : public Section
+{
+  public:
     BlankSection(std::size_t num_lines)
-        : m_num { num_lines }
-    {}
+        : m_num {num_lines}
+    {
+    }
 
     /**
      * @copydoc Section::size()
@@ -108,19 +118,21 @@ public:
     /**
      * @copydoc Section::at()
      */
-    SectionLine at(std::size_t offset) const override {
+    SectionLine at(std::size_t offset) const override
+    {
         if (offset > m_num)
             throw std::out_of_range("BlankSection offset is not in range");
-        return { "", "", SectionLineType::BLANK };
+        return {"", "", SectionLineType::BLANK};
     }
 
-private:
+  private:
     std::size_t m_num;
 };
 
-class DirectoryInfoSection : public Section {
-public:
-    DirectoryInfoSection(const DirectoryInfo &info);
+class DirectoryInfoSection : public Section
+{
+  public:
+    DirectoryInfoSection(const DirectoryInfo& info);
 
     /**
      * @copydoc Section::size()
@@ -132,13 +144,14 @@ public:
      */
     SectionLine at(std::size_t offset) const override;
 
-private:
-    const DirectoryInfo &m_info;
+  private:
+    const DirectoryInfo& m_info;
 };
 
-class WeatherInfoSection : public Section {
-public:
-    WeatherInfoSection(const WeatherInfo &info);
+class WeatherInfoSection : public Section
+{
+  public:
+    WeatherInfoSection(const WeatherInfo& info);
 
     /**
      * @copydoc Section::size()
@@ -150,8 +163,8 @@ public:
      */
     SectionLine at(std::size_t offset) const override;
 
-private:
-    const WeatherInfo &m_info;
+  private:
+    const WeatherInfo& m_info;
 };
 
 #endif

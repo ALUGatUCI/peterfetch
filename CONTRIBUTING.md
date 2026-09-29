@@ -30,7 +30,9 @@ Please test your code before opening a pull request. Tests should pass and writi
 
 Please follow the conventions that you see within any of the source files you are working on.
 
-> Note: Automated style checks will be introduced soon. After their introduction, please consult them.
+The project also provides a `.clang-format` configuration. If you have nix installed on your system, please run `nix fmt .` to ensure your code is properly formatted.
+
+> Note: Automated style checks for non-nix system are coming soon.
 
 ## Naming Your Commits
 

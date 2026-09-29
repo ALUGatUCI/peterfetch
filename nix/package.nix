@@ -1,4 +1,9 @@
-{ pkgs, stdenv, commonPkgs, ... }:
+{
+  pkgs,
+  stdenv,
+  commonPkgs,
+  ...
+}:
 stdenv.mkDerivation {
   pname = "peterfetch";
   version = "unstable";
@@ -12,7 +17,7 @@ stdenv.mkDerivation {
   ];
 
   checkPhase = ''
-  ctest -j$NIX_BUILD_CORES --output-on-failure
+    ctest -j$NIX_BUILD_CORES --output-on-failure
   '';
 
   nativeBuildInputs = (commonPkgs pkgs);

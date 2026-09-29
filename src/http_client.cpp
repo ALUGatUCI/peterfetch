@@ -9,6 +9,7 @@ HttpClient::HttpClient(cpr::Header headers)
     m_headers["User-Agent"] = "peterfetch";
 }
 
-cpr::Response HttpClient::get(const cpr::Url &url, bool redirect) {
-    return cpr::Get(url, m_headers, cpr::Redirect { redirect });
+cpr::Response HttpClient::get(const cpr::Url& url, bool redirect)
+{
+    return cpr::Get(url, m_headers, cpr::Redirect {redirect});
 }
