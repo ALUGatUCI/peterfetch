@@ -1,0 +1,21 @@
+# Read meta/subtrees.sh
+
+[3rd-party/args]
+repo = https://github.com/Taywee/args.git
+sha = 866c4d3c2e891a0887009b5bef5e09fcbcb13b3c
+
+[3rd-party/libxml2]
+repo = https://gitlab.gnome.org/GNOME/libxml2.git
+sha = c94eb0210183b9d7cb43f8e7fddc6be55843ef49
+
+[3rd-party/cpr]
+repo = https://github.com/libcpr/cpr.git
+sha = 8573f1d76657fac21cb18ee8cf7ab5912584a4ca
+
+[3rd-party/nlohmann-json]
+repo = https://github.com/nlohmann/json.git
+sha = 98386eb08b609c172f9f4bf3e74c8d18c5ad583c
+
+[3rd-party/googletest]
+repo = https://github.com/google/googletest
+sha = d72f9c8aea6817cdf1ca0ac10887f328de7f3da2

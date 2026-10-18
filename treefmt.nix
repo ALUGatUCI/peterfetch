@@ -5,4 +5,5 @@
 
   programs.nixfmt.enable = true;
   programs.clang-format.enable = true;
+  programs.shfmt.enable = true;
 }

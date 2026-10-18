@@ -2,10 +2,6 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     treefmt-nix.url = "github:numtide/treefmt-nix";
-
-    # Since Git submodules are used to vendor dependencies, they must be explicitly allowed.
-    # This does require a Nix version >= 2.27.0
-    self.submodules = true;
   };
 
   outputs =

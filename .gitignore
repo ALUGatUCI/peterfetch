@@ -19,7 +19,7 @@
 !.github/**
 !.envrc
 !.gitignore
-!.gitmodules
+!.gitsubtrees
 !.ignore
 !CMakeLists.txt
 !CONTRIBUTING.md

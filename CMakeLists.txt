@@ -17,18 +17,6 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
 set(FETCHCONTENT_QUIET OFF)
 
-find_package(Git QUIET)
-if(GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git")
-    execute_process(
-        COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-        RESULT_VARIABLE GIT_SUBMOD_RESULT
-    )
-    if(NOT GIT_SUBMOD_RESULT EQUAL 0)
-        message(FATAL_ERROR "git submodule update failed with ${GIT_SUBMOD_RESULT}")
-    endif()
-endif()
-
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     add_compile_options(-fcolor-diagnostics)
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
