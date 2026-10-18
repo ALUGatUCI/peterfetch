@@ -8,7 +8,7 @@ Before contributing to the project, please take a look at [CONTRIBUTING.md](CONT
 
 ## Obtaining the Source
 
-This project uses Git Submodules. When cloning, make sure to either clone with `--recursive` or run `git submodule update --init --recursive` after cloning.
+Just run `git clone https://git.alugatuci.org/b0x207/peterfetch.git`.
 
 ## Building
 
