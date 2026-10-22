@@ -20,6 +20,7 @@
 !.envrc
 !.gitignore
 !.gitsubtrees
+!.gitattributes
 !.ignore
 !CMakeLists.txt
 !CONTRIBUTING.md
